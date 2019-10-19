@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+$sufaceColor: #1f1f1f;
+$onPrimaryColor: #e2e2e2;
+$backgroundColor: #121212;
+$shadowColor: #050505;
+
+body{
+    margin: 0;
+    height: 100vh;
+    background: $backgroundColor;
+    font-family: 'Ubuntu', sans-serif;
+    color: $onPrimaryColor;
+}
