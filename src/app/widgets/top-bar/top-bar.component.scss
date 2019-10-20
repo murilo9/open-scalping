@@ -4,6 +4,7 @@ $backgroundColor: #121212;
 $shadowColor: #050505;
 
 .topbar{
+    display: flex;
     background: $sufaceColor;
     color: $onPrimaryColor;
     padding: 8px;
