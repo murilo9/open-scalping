@@ -1,0 +1,24 @@
+<div class="deal-history">
+    <p class="title">Histórico de negócios</p>
+    <p class="item subtitle">
+        <span class="field score">Valor</span>
+        <span class="field quantity">Qtd</span>
+        <span class="field sold">Vendedor</span>
+        <span class="field bought">Comprador</span>
+    </p>
+    <div class="deal-list" id="deal-list">
+        <div class="deal-list-wrapper">
+            <p *ngFor="let deal of dealList" class="item" 
+            [ngClass]="(deal.type === 0) ? 'activeSold' : 'activeBought'">
+                <span class="field score">{{deal.score}}</span>
+                <span class="field quantity">{{deal.quantity}}</span>
+                <span class="field sold">
+                    {{deal.type === 0 ? deal.activePlayerId : deal.passivePlayerId}}
+                </span>
+                <span class="field bought">
+                    {{deal.type === 1 ? deal.activePlayerId : deal.passivePlayerId}}
+                </span>
+            </p>
+        </div>
+    </div>
+</div>

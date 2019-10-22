@@ -1,0 +1,51 @@
+$sufaceColor: #1f1f1f;
+$onPrimaryColor: #e2e2e2;
+$backgroundColor: #121212;
+$shadowColor: rgba(0,0,0,0.5);
+
+.deal-history{
+    display: inline-flex;
+    flex-direction: column;
+    background: $sufaceColor;
+    padding: 8px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px $shadowColor;
+    .title{
+        text-align: center;
+        margin-bottom: 8px;
+    }
+    .deal-list{
+        height: 256px;
+        overflow-y: scroll;
+        transform: rotate(180deg);
+        direction: rtl;
+        .deal-list-wrapper{
+            transform: rotate(180deg);
+            direction: ltr;
+        }
+    }
+    .item{
+        &.activeSold{
+            color: green;
+        }
+        &.activeBought{
+            color: red;
+        }
+        .field, .subtitle>.field{
+            display: inline-block;
+            &.quantity{
+                width: 48px;
+                text-align: center;
+            }
+            &.score{
+                width: 88px;
+            }
+            &.sold{
+                width: 88px;
+            }
+            &.bought{
+                width: 88px;
+            }
+        }
+    }
+}

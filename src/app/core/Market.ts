@@ -2,8 +2,9 @@ import { Offer } from '../shared/Offer';
 import { Deal } from '../shared/Deal';
 
 import { OfferType } from '../shared/OfferType';
+import { MarketService } from '../shared/market.service';
 
-interface OfferLevel {
+export interface OfferLevel {
     status: OfferType, 
     total: number, 
     queue: Array<Offer>
@@ -14,7 +15,7 @@ export class Market{
     private offerList: Array<OfferLevel>;     //Lista de ofertas por ordem de pontuação (score)
     private dealList: Array<Deal>;
 
-    constructor(){
+    constructor(private marketService: MarketService){
         this.offerList = [];
         this.dealList = [];
     }
@@ -41,6 +42,7 @@ export class Market{
                     var deal = new Deal(dealSize, offer.score, offer.type, offer.sendingPlayerId, 
                     this.offerList[offer.score].queue[0].sendingPlayerId);
                     this.dealList.push(deal);
+                    this.marketService.dealListHasChanged(this.dealList);
                     //Remove a oferta apregoada a lista caso ela tenha sido totalmente fechada:
                     if(this.offerList[offer.score].queue[0].quantity == 0){
                         this.offerList[offer.score].queue.splice(0, 1);
@@ -74,6 +76,7 @@ export class Market{
                     var deal = new Deal(dealSize, offer.score, offer.type, offer.sendingPlayerId, 
                     this.offerList[offer.score].queue[0].sendingPlayerId);
                     this.dealList.push(deal);
+                    this.marketService.dealListHasChanged(this.dealList);
                     //Remove a oferta apregoada a lista caso ela tenha sido totalmente fechada:
                     if(this.offerList[offer.score].queue[0].quantity == 0){
                         this.offerList[offer.score].queue.splice(0, 1);
@@ -92,6 +95,7 @@ export class Market{
         }
 
         this.refreshOfferList(offer.score)      //Finalmente, atualiza o total de ofertas neste preço:
+        this.marketService.offerListHasChanged(this.offerList);
         console.log('----------- momento ---------------')
         console.log(this.offerList);
         console.log(this.dealList);

@@ -1,6 +1,7 @@
 import { Market } from './Market';
 import { Player } from './Player';
 import { BotPlayer } from './BotPlayer';
+import { MarketService } from '../shared/market.service';
 
 export class Game{
     public market: Market;
@@ -10,8 +11,8 @@ export class Game{
         'XP', 'UBS', 'Clear', 'BTG', 'Rico', 'Turett', 'Itaú', 'Bradesco', 'Santander', 'XP', 'UBS'
     ]
 
-    constructor(){
-        this.market = new Market();
+    constructor(private marketService: MarketService){
+        this.market = new Market(marketService);
         this.players.push(new Player(this.lastplayerId, 'XP'));     //Usuário sempre será da XP
         var playersQty = Math.floor(10 + (Math.random() * 20));
         for(var i = 0; i < playersQty; i++){
