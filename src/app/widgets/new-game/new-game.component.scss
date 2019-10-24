@@ -1,0 +1,50 @@
+$sufaceColor: #1f1f1f;
+$onPrimaryColor: #e2e2e2;
+$backgroundColor: #121212;
+$shadowColor: #050505;
+
+.new-game-view{
+    padding: 24px 0;
+    .title{
+        font-size: 12pt;
+        text-align: center;
+        margin-bottom: 32px;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+        margin: auto;
+        width: 400px;
+        .field{
+            height: 24px;
+            margin-bottom: 32px;
+            label{
+                margin-right: 8px;
+                display: inline-block;
+                width: 176px;
+                text-align: right;
+            }
+            input[type=number]{
+                outline: none;
+                border: 1px solid $onPrimaryColor;
+                background: none;
+                border-radius: 4px;
+                height: 24px;
+                color: $onPrimaryColor;
+                text-align: center;
+                width: 128px;
+            }
+        }
+        .start-button{
+            background: $sufaceColor;
+            box-shadow: 0 1px 3px $shadowColor;
+            color: $onPrimaryColor;
+            border-radius: 4px;
+            padding: 0 16px;
+            height: 24px;
+            border: none;
+            font-size: 11pt;
+        }
+    }
+}

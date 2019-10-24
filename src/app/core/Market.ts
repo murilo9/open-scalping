@@ -3,6 +3,7 @@ import { Deal } from '../shared/Deal';
 
 import { OfferType } from '../shared/OfferType';
 import { MarketService } from '../shared/market.service';
+import { NewGameForm } from './NewGameForm';
 
 export interface OfferLevel {
     status: OfferType, 
@@ -12,12 +13,16 @@ export interface OfferLevel {
 
 export class Market{
     
-    private offerList: Array<OfferLevel>;     //Lista de ofertas por ordem de pontuação (score)
-    private dealList: Array<Deal>;
+    offerList: Array<OfferLevel>;     //Lista de ofertas por ordem de pontuação (score)
+    dealList: Array<Deal>;
+    tickSize: Number;
+    minimumOfferSize: Number;
 
-    constructor(private marketService: MarketService){
+    constructor(private marketService: MarketService, form: NewGameForm){
         this.offerList = [];
         this.dealList = [];
+        this.tickSize = form.tickSize;
+        this.minimumOfferSize = form.minimumOfferSize;
     }
 
     public makeOffer(offer: Offer){

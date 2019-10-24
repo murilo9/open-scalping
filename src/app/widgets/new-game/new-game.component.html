@@ -1,4 +1,30 @@
 <div class="new-game-view">
-    Formulário de nova partida
-    <a href='' onclick="event.preventDefault()" (click)="newGame()">Iniciar</a>
+    <p class="title">Nova Partida</p>
+    <form>
+        <div class="field">
+            <label>Players (máx. 30):</label>
+            <input type="number" [(ngModel)]="form.playersQty" name="playersQty">
+        </div>
+        <div class="field">
+            <label>Preço Incial (venda):</label>
+            <input type="number" [(ngModel)]="form.initialSalePrice" name="initialSalePrice">
+        </div>
+        <div class="field">
+            <label>Preço Incial (compra):</label>
+            <input type="number" [(ngModel)]="form.initialPurchasePrice" name="initialPurchasePrice">
+        </div>
+        <div class="field">
+            <label>Variação mínima (tick):</label>
+            <input type="number" [(ngModel)]="form.tickSize" name="tickSize">
+        </div>
+        <div class="field">
+            <label>Lote mínimo:</label>
+            <input type="number" [(ngModel)]="form.minimumOfferSize" name="minimumOfferSize">
+        </div>
+        <div class="field">
+            <label></label>
+            <button type="button" (click)="newGame()" class="start-button">Iniciar</button>
+        </div>
+    </form>
+    
 </div>

@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { Offer } from './shared/Offer';
 import { OfferType } from './shared/OfferType';
 import { OfferLevel } from './core/Market';
+import { NewGameForm } from './core/NewGameForm';
 
 @Component({
   selector: 'app-root',
@@ -26,14 +27,14 @@ export class AppComponent {
     private gameService: GameService, 
     private marketService: MarketService,
     private router: Router){
-    this.subscription1 = gameService.newGameCalled$.subscribe(() => {
-      this.onNewGame();
+    this.subscription1 = gameService.newGameCalled$.subscribe((form: NewGameForm) => {
+      this.onNewGame(form);
     })
   }
 
-  onNewGame(){
+  onNewGame(form: NewGameForm){
     this.gameStarted = true;
-    this.game = new Game(this.marketService);
+    this.game = new Game(this.marketService, form);
     this.router.navigateByUrl('/play');
   }
 

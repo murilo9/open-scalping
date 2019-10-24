@@ -2,6 +2,7 @@ import { Market } from './Market';
 import { Player } from './Player';
 import { BotPlayer } from './BotPlayer';
 import { MarketService } from '../shared/market.service';
+import { NewGameForm } from './NewGameForm';
 
 export class Game{
     public market: Market;
@@ -11,10 +12,11 @@ export class Game{
         'XP', 'UBS', 'Clear', 'BTG', 'Rico', 'Turett', 'Itaú', 'Bradesco', 'Santander', 'XP', 'UBS'
     ]
 
-    constructor(private marketService: MarketService){
-        this.market = new Market(marketService);
+    constructor(private marketService: MarketService, form: NewGameForm){
+        this.market = new Market(marketService, form);
         this.players.push(new Player(this.lastplayerId, 'XP'));     //Usuário sempre será da XP
-        var playersQty = Math.floor(10 + (Math.random() * 20));
+        //Insere os players:
+        var playersQty = form.playersQty;
         for(var i = 0; i < playersQty; i++){
             this.lastplayerId++;
             var label = this.botNames[Math.floor(Math.random()*10)];
