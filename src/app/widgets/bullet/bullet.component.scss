@@ -1,0 +1,77 @@
+$sufaceColor: #1f1f1f;
+$onPrimaryColor: #e2e2e2;
+$backgroundColor: #121212;
+$shadowColor: rgba(0,0,0,0.5);
+
+.bullet{
+    display: inline-block;
+    background: $sufaceColor;
+    padding: 16px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px $shadowColor;
+    margin-bottom: 8px;
+    .title{
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 16px;
+    }
+    form{
+        .hr{
+            border-bottom: 1px solid $backgroundColor;
+        }
+        .field{
+            display: flex;
+            justify-content: space-around;
+            &:not(:last-child){
+                margin-bottom: 24px;
+            }
+            .value-input{
+                border: 1px solid $onPrimaryColor;
+                border-radius: 4px;
+                .button{
+                    background: none;
+                    border: none;
+                    padding: 0 8px;
+                    box-shadow: none;
+                }
+                input[type=text]{
+                    outline: none;
+                    background: none;
+                    border-top: none;
+                    border-bottom: none;
+                    border-left: 1px solid $onPrimaryColor;
+                    border-right: 1px solid $onPrimaryColor;
+                    height: 24px;
+                    color: $onPrimaryColor;
+                    text-align: center;
+                    width: 72px;
+                    &:first-child{
+                        margin-right: 8px;
+                    }
+                    &.sell{
+                        color: red;
+                    }
+                    &.buy{
+                        color: green;
+                    }
+                }
+            }
+            .button{
+                background: $sufaceColor;
+                box-shadow: 0 1px 3px $shadowColor;
+                color: $onPrimaryColor;
+                border-radius: 4px;
+                padding: 0 16px;
+                height: 24px;
+                border: none;
+                font-size: 11pt;
+                &.buy{
+                    background: #33691E;
+                }
+                &.sell{
+                    background: #BF360C;
+                }
+            }
+        }
+    }
+}

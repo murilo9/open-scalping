@@ -5,11 +5,12 @@ import { TopBarComponent } from './top-bar/top-bar.component';
 import { NewGameComponent } from './new-game/new-game.component';
 import { DealHistoryComponent } from './deal-history/deal-history.component';
 import { FormsModule } from '@angular/forms';
+import { BulletComponent } from './bullet/bullet.component';
 
 
 
 @NgModule({
-  declarations: [GameViewComponent, TopBarComponent, NewGameComponent, DealHistoryComponent],
+  declarations: [GameViewComponent, TopBarComponent, NewGameComponent, DealHistoryComponent, BulletComponent],
   imports: [
     CommonModule,
     FormsModule

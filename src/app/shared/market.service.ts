@@ -3,6 +3,8 @@ import { Subject } from 'rxjs';
 
 import { OfferLevel } from '../core/Market';
 import { Deal } from './Deal';
+import { OfferType } from './OfferType';
+import { Offer } from './Offer';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,8 @@ export class MarketService {
   public offerListChanged$ = this.offerListSubject.asObservable();
   private dealListSubject = new Subject<Array<Deal>>();
   public dealListChanged$ = this.dealListSubject.asObservable();
+  public offerSubject = new Subject<Offer>();
+  public offerSent$ = this.offerSubject.asObservable();
   
   constructor() { }
 
@@ -23,4 +27,17 @@ export class MarketService {
   public dealListHasChanged(dealList: Array<Deal>){
     this.dealListSubject.next(dealList);
   }
+
+  public makeSaleOffer(playerId, price, quantity){
+    this.offerSubject.next(new Offer(
+      quantity, price, OfferType.SALE, playerId
+    ))
+  }
+
+  public makePurchaseOffer(playerId, price, quantity){
+    this.offerSubject.next(new Offer(
+      quantity, price, OfferType.PURCHASE, playerId
+    ))
+  }
+
 }

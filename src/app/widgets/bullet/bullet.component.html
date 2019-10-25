@@ -1,0 +1,31 @@
+<div class="bullet">
+    <p class="title">Boleta</p>
+    <form>
+        <div class="field">
+            <div class="value-input">
+                <a href='#' onclick="event.preventDefault()" class="button">-</a>
+                <input type="text" [(ngModel)]="quantity" name="quantity" class="quantity">
+                <a href='#' onclick="event.preventDefault()" class="button">+</a>
+            </div>
+            <div class="value-input">
+                <a href='#' onclick="event.preventDefault()" class="button">-</a>
+                <input type="text" [(ngModel)]="price" 
+                (change)="parsePrice($event)" name="price" class="price">
+                <a href='#' onclick="event.preventDefault()" class="button">+</a>
+            </div>
+        </div>
+        <div class="field">
+            <a href='#' onclick="event.preventDefault()" class="button sell" (click)="sell()">Vender</a>
+            <a href='#' onclick="event.preventDefault()" class="button buy" (click)="buy()">Comprar</a>
+        </div>
+        <p class="field hr"></p>
+        <div class="field">
+            <button type="button" class="button sell">Vender no Topo</button>
+            <button type="button" class="button buy">Comprar no Topo</button>
+        </div>
+        <div class="field">
+            <button type="button" class="button sell">Vender Já</button>
+            <button type="button" class="button buy">Comprar Já</button>
+        </div>
+    </form>
+</div>

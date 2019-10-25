@@ -7,7 +7,6 @@ import { MarketService } from './shared/market.service';
 import { Subscription } from 'rxjs';
 import { Offer } from './shared/Offer';
 import { OfferType } from './shared/OfferType';
-import { OfferLevel } from './core/Market';
 import { NewGameForm } from './core/NewGameForm';
 
 @Component({
@@ -21,14 +20,24 @@ export class AppComponent {
   title = 'open-scalping';
   gameStarted = false;
   subscription1: Subscription;
+  subscription2: Subscription;
   public game: Game;
+  initialPurchasePrice: Number;
+  initialSalePrice: Number;
 
   constructor(
     private gameService: GameService, 
     private marketService: MarketService,
     private router: Router){
     this.subscription1 = gameService.newGameCalled$.subscribe((form: NewGameForm) => {
+      this.initialPurchasePrice = form.initialPurchasePrice;
+      this.initialSalePrice = form.initialSalePrice;
       this.onNewGame(form);
+    })
+    this.subscription2 = marketService.offerSent$.subscribe((offer) => {
+      console.log('enviando ordem ao mercado')
+      console.log(offer)
+      this.game.market.makeOffer(offer);
     })
   }
 

@@ -7,12 +7,18 @@ import { NewGameForm } from './NewGameForm';
 })
 export class GameService {
 
-  private newGameSubject = new Subject<Object>();
-  public newGameCalled$ = this.newGameSubject.asObservable();
+  newGameSubject = new Subject<Object>();
+  newGameCalled$ = this.newGameSubject.asObservable();
+  initialPurchasePrice: Number;
+  initialSalePrice: Number;
+  minimumOfferSize: Number;
 
   constructor() { }
 
   public callNewGame(form: NewGameForm){
+    this.initialPurchasePrice = form.initialPurchasePrice;
+    this.initialSalePrice = form.initialSalePrice;
+    this.minimumOfferSize = form.minimumOfferSize;
     this.newGameSubject.next(form);
   }
 }
