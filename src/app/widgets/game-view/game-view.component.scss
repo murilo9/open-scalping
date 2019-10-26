@@ -1,7 +1,17 @@
 .game-view{
     padding: 8px 0;
+    display: flex;
+    .col-1{
+        display: inline-flex;
+        height: 100%;
+    }
     .col-2{
-        display: flex;
+        display: inline-flex;
+        height: 100%;
         flex-direction: column;
+    }
+    .col-3{
+        height: 100%;
+        display: inline-flex;
     }
 }

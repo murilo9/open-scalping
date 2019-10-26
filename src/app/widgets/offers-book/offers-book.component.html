@@ -1,0 +1,33 @@
+<div class="offers-book">
+    <p class="title">Book de Ofertas</p>
+    <div class="_wrapper_">
+        <div class="purchase">
+            <div class="titles">
+                <span class="total">Total</span>
+                <span class="price">Preço</span>
+            </div>
+            <div class="list">
+                <div *ngFor="let score of purchaseOffersList">
+                    <div class="offer" *ngIf="score.total != 0">
+                        <span class="total">{{score.total}}</span>
+                        <span class="price">{{score.score}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sale">
+            <div class="titles">
+                <span class="price">Preço</span>
+                <span class="total">Total</span>
+            </div>
+            <div class="list">
+                <div *ngFor="let score of saleOffersList">
+                    <div class="offer" *ngIf="score.total != 0">
+                        <span class="price">{{score.score}}</span>
+                        <span class="total">{{score.total}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

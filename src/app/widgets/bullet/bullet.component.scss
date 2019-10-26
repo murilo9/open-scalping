@@ -2,6 +2,7 @@ $sufaceColor: #1f1f1f;
 $onPrimaryColor: #e2e2e2;
 $backgroundColor: #121212;
 $shadowColor: rgba(0,0,0,0.5);
+$inputBackgroundColor: #080808;
 
 .bullet{
     display: inline-block;
@@ -36,7 +37,7 @@ $shadowColor: rgba(0,0,0,0.5);
                 }
                 input[type=text]{
                     outline: none;
-                    background: none;
+                    background: $backgroundColor;
                     border-top: none;
                     border-bottom: none;
                     border-left: 1px solid $onPrimaryColor;

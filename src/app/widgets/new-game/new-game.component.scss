@@ -2,6 +2,7 @@ $sufaceColor: #1f1f1f;
 $onPrimaryColor: #e2e2e2;
 $backgroundColor: #121212;
 $shadowColor: #050505;
+$inputBackgroundColor: #080808;
 
 .new-game-view{
     padding: 24px 0;
@@ -27,7 +28,7 @@ $shadowColor: #050505;
             input[type=number]{
                 outline: none;
                 border: 1px solid $onPrimaryColor;
-                background: none;
+                background: $inputBackgroundColor;
                 border-radius: 4px;
                 height: 24px;
                 color: $onPrimaryColor;

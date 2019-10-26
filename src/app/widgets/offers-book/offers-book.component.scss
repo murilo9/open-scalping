@@ -1,0 +1,36 @@
+$sufaceColor: #1f1f1f;
+$onPrimaryColor: #e2e2e2;
+$backgroundColor: #121212;
+$shadowColor: #050505;
+$inputBackgroundColor: #080808;
+
+.offers-book{
+    display: inline-flex;
+    flex-direction: column;
+    background: $sufaceColor;
+    padding: 8px;
+    border-radius: 4px;
+    .title{
+        text-align: center;
+        margin-bottom: 8px;
+    }
+    .purchase, .sale{
+        display: inline-block;
+        span{
+            display: inline-block;
+            text-align: center;
+        }
+        .titles{
+            font-weight: bold;
+        }
+        .list{
+
+        }
+        .total{
+            width: 48px;
+        }
+        .price{
+            width: 96px;
+        }
+    }
+}

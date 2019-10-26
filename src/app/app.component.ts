@@ -35,8 +35,6 @@ export class AppComponent {
       this.onNewGame(form);
     })
     this.subscription2 = marketService.offerSent$.subscribe((offer) => {
-      console.log('enviando ordem ao mercado')
-      console.log(offer)
       this.game.market.makeOffer(offer);
     })
   }

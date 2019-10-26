@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { OfferLevel } from '../core/Market';
 import { Deal } from './Deal';
 import { OfferType } from './OfferType';
 import { Offer } from './Offer';
@@ -11,7 +10,7 @@ import { Offer } from './Offer';
 })
 export class MarketService {
 
-  private offerListSubject = new Subject<Array<OfferLevel>>();
+  private offerListSubject = new Subject<Object>();
   public offerListChanged$ = this.offerListSubject.asObservable();
   private dealListSubject = new Subject<Array<Deal>>();
   public dealListChanged$ = this.dealListSubject.asObservable();
@@ -20,7 +19,7 @@ export class MarketService {
   
   constructor() { }
 
-  public offerListHasChanged(offerList: Array<OfferLevel>){
+  public offerListHasChanged(offerList: Object){
     this.offerListSubject.next(offerList);    //Isto será emitido para os widgets
   }
 
@@ -30,13 +29,13 @@ export class MarketService {
 
   public makeSaleOffer(playerId, price, quantity){
     this.offerSubject.next(new Offer(
-      quantity, price, OfferType.SALE, playerId
+      quantity, price+'', OfferType.SALE, playerId
     ))
   }
 
   public makePurchaseOffer(playerId, price, quantity){
     this.offerSubject.next(new Offer(
-      quantity, price, OfferType.PURCHASE, playerId
+      quantity, price+'', OfferType.PURCHASE, playerId
     ))
   }
 
