@@ -44,14 +44,4 @@ export class AppComponent {
     this.game = new Game(this.marketService, form);
     this.router.navigateByUrl('/play');
   }
-
-  temp_apregoarVenda(){
-    var offer = new Offer(2, 3175.50, OfferType.SALE, 0);
-    this.game.market.makeOffer(offer);
-  }
-
-  temp_apregoarCompra(){
-    var offer = new Offer(3, 3175.50, OfferType.PURCHASE, 1);
-    this.game.market.makeOffer(offer);
-  }
 }

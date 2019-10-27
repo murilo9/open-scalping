@@ -9,7 +9,7 @@ import { OfferScore } from 'src/app/core/Market';
   templateUrl: './offers-book.component.html',
   styleUrls: ['./offers-book.component.scss']
 })
-export class OffersBookComponent implements OnInit {
+export class OffersBookComponent {
 
   subscription1: Subscription;
   purchaseOffersList: Array<OfferScore>;   //Objeto onde a chave é o score e o valor é o objeto com dados do nível de preço
@@ -43,9 +43,6 @@ export class OffersBookComponent implements OnInit {
         console.log('Erro, tipo de offer score não identificado: ' + offersList[score].status)
     }
     //Ordena as litas de ofertas:
-  }
-
-  ngOnInit() {
   }
 
 }

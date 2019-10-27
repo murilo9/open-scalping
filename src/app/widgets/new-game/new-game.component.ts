@@ -10,6 +10,8 @@ import { NewGameForm } from 'src/app/core/NewGameForm';
 })
 export class NewGameComponent implements OnInit {
 
+
+  //Este são os valores default inseridos no formulário de nova partida:
   form: NewGameForm = {
     playersQty: 30,
     initialPurchasePrice: 65370,

@@ -1,7 +1,7 @@
 export interface NewGameForm {
-    playersQty: Number,
-    initialPurchasePrice: Number,
-    initialSalePrice: Number,
-    tickSize: Number,
-    minimumOfferSize: Number,
+    playersQty: number,
+    initialPurchasePrice: number,
+    initialSalePrice: number,
+    tickSize: number,
+    minimumOfferSize: number,
 }

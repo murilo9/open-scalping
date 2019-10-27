@@ -9,12 +9,20 @@ import { MarketService } from 'src/app/shared/market.service';
 })
 export class BulletComponent implements OnInit {
 
-  price: any = 0;
-  quantity: any = 0;
+  priceString: String;    //Quantidade em string
+  quantityString: string;   //Preço em string, formatado com 2 casas decimais
+  price: number = 0;    //Preço real, numérico
+  quantity: number = 0;    //Quantidde real, numérico
+  tick: number;   //Variação mínima de pontuação
+  minimumOfferSize: number;
 
   constructor(private gameService: GameService, private marketService: MarketService) { 
-    this.price = gameService.initialSalePrice.toFixed(2);
+    this.price = gameService.initialSalePrice;
+    this.priceString = this.price.toFixed(2);
     this.quantity = gameService.minimumOfferSize;
+    this.quantityString = this.quantity.toString();
+    this.tick = gameService.tickSize;
+    this.minimumOfferSize = gameService.minimumOfferSize;
   }
 
   ngOnInit() {
@@ -22,8 +30,18 @@ export class BulletComponent implements OnInit {
 
   parsePrice(event: any){
     let price = event.target.value;
-    if(!isNaN(price))
-      this.price = parseFloat(event.target.value).toFixed(2);
+    if(!isNaN(price)){
+      this.price = parseFloat(price);    //Coloca o valor numérico no price
+      this.priceString = this.price.toFixed(2);   //Coloca a string formatada no priceString
+    }
+  }
+
+  parseQuantity(event: any){
+    let quantity = event.target.value;
+    if(!isNaN(quantity)){
+      this.quantity = parseFloat(quantity);    //Coloca o valor numérico no price
+      this.quantityString = this.quantity.toFixed(2);   //Coloca a string formatada no quantityString
+    }
   }
 
   sell(){
@@ -32,6 +50,30 @@ export class BulletComponent implements OnInit {
 
   buy(){
     this.marketService.makePurchaseOffer(0, this.price, this.quantity);
+  }
+
+  priceIncrease(){
+    this.price = this.price + this.tick;
+    this.priceString = this.price.toFixed(2);
+  }
+
+  priceDecrease(){
+    if(this.price > this.tick){
+      this.price = this.price - this.tick;
+      this.priceString = this.price.toFixed(2);
+    }
+  }
+
+  quantityIncrease(){
+    this.quantity = this.quantity + 1;
+    this.quantityString = this.quantity.toString();
+  }
+
+  quantityDecrease(){
+    if(this.quantity > this.minimumOfferSize){
+      this.quantity = this.quantity - 1;
+      this.quantityString = this.quantity.toString();
+    }
   }
 
 }

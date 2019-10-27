@@ -18,9 +18,9 @@ export interface OfferScore {
 export class Market{
     
     offerList: Object;     //Lista de ofertas por ordem de pontuação (score)
-    dealList: Array<Deal>;
-    tickSize: Number;
-    minimumOfferSize: Number;
+    dealList: Array<Deal>;      //Lista de negócios fechados ordenados por tempo
+    tickSize: Number;       //Variação mínima da pontuação
+    minimumOfferSize: Number;       //Quantidade mínima de lotes por oferta
 
     constructor(private marketService: MarketService, form: NewGameForm){
         this.offerList = {};

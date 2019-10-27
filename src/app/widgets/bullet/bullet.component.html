@@ -3,15 +3,20 @@
     <form>
         <div class="field">
             <div class="value-input">
-                <a href='#' onclick="event.preventDefault()" class="button">-</a>
-                <input type="text" [(ngModel)]="quantity" name="quantity" class="quantity">
-                <a href='#' onclick="event.preventDefault()" class="button">+</a>
+                <a href='#' onclick="event.preventDefault()" 
+                class="button" (click)="quantityDecrease()">-</a>
+                <input type="text" [(ngModel)]="quantityString" 
+                name="quantity" class="quantity" (change)="parseQuantity($event)">
+                <a href='#' onclick="event.preventDefault()" 
+                class="button" (click)="quantityIncrease()">+</a>
             </div>
             <div class="value-input">
-                <a href='#' onclick="event.preventDefault()" class="button">-</a>
-                <input type="text" [(ngModel)]="price" 
+                <a href='#' onclick="event.preventDefault()" 
+                class="button" (click)="priceDecrease()">-</a>
+                <input type="text" [(ngModel)]="priceString" 
                 (change)="parsePrice($event)" name="price" class="price">
-                <a href='#' onclick="event.preventDefault()" class="button">+</a>
+                <a href='#' onclick="event.preventDefault()" 
+                class="button" (click)="priceIncrease()">+</a>
             </div>
         </div>
         <div class="field">

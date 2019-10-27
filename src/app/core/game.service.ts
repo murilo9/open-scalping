@@ -10,8 +10,9 @@ export class GameService {
   newGameSubject = new Subject<Object>();
   newGameCalled$ = this.newGameSubject.asObservable();
   initialPurchasePrice: Number;
-  initialSalePrice: Number;
-  minimumOfferSize: Number;
+  initialSalePrice: number;
+  minimumOfferSize: number;
+  tickSize: number;
 
   constructor() { }
 
@@ -19,6 +20,7 @@ export class GameService {
     this.initialPurchasePrice = form.initialPurchasePrice;
     this.initialSalePrice = form.initialSalePrice;
     this.minimumOfferSize = form.minimumOfferSize;
+    this.tickSize = form.tickSize;
     this.newGameSubject.next(form);
   }
 }
