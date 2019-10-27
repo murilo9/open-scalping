@@ -10,7 +10,7 @@
         <div class="deal-list-wrapper">
             <p *ngFor="let deal of dealList" class="item" 
             [ngClass]="(deal.type === 0) ? 'activeSold' : 'activeBought'">
-                <span class="field score">{{deal.score}}</span>
+                <span class="field score">{{deal.score | currency:' '}}</span>
                 <span class="field quantity">{{deal.quantity}}</span>
                 <span class="field sold">
                     {{deal.type === 0 ? deal.activePlayerId : deal.passivePlayerId}}

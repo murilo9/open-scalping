@@ -10,7 +10,7 @@
                 <div *ngFor="let score of purchaseOffersList">
                     <div class="offer" *ngIf="score.total != 0">
                         <span class="total">{{score.total}}</span>
-                        <span class="price">{{score.score}}</span>
+                        <span class="price">{{score.score | currency:' '}}</span>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
             <div class="list">
                 <div *ngFor="let score of saleOffersList">
                     <div class="offer" *ngIf="score.total != 0">
-                        <span class="price">{{score.score}}</span>
+                        <span class="price">{{score.score | currency:' '}}</span>
                         <span class="total">{{score.total}}</span>
                     </div>
                 </div>

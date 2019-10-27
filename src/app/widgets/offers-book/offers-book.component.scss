@@ -26,14 +26,21 @@ $inputBackgroundColor: #080808;
         .titles{
             font-weight: bold;
         }
-        .list{
-
-        }
         .total{
             width: 48px;
         }
         .price{
             width: 96px;
+        }
+    }
+    .purchase{
+        .offer .price{
+            color: green;
+        }
+    }
+    .sale{
+        .offer .price{
+            color: red;
         }
     }
 }
