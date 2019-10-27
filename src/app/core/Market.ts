@@ -9,7 +9,7 @@ import { NewGameForm } from './NewGameForm';
  * A forma que as ofertas aparecem no book de ofertas (ordenadas por score): um array de OfferScore
  */
 export interface OfferScore {
-    score: String,
+    score: string,
     status: OfferType, 
     total: number, 
     queue: Array<Offer>
