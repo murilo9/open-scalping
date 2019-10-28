@@ -10,7 +10,7 @@ export class GameService {
 
   newGameSubject = new Subject<Object>();
   newGameCalled$ = this.newGameSubject.asObservable();
-  initialPurchasePrice: Number;
+  initialPurchasePrice: number;
   initialSalePrice: number;
   minimumOfferSize: number;
   tickSize: number;

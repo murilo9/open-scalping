@@ -1,10 +1,13 @@
+import { MarketService } from '../shared/market.service';
+import { GameService } from './game.service';
+
 export class Player{
 
-    public id: number;
-    public label: string;
-    public human: boolean;
+    id: number;
+    label: string;
+    human: boolean;
 
-    constructor(id: number, label: string){
+    constructor(id: number, label: string, marketService: MarketService){
         this.id = id;
         this.label = label;
         this.human = true;
