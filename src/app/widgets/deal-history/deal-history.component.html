@@ -13,10 +13,12 @@
                 <span class="field score">{{deal.score | currency:' '}}</span>
                 <span class="field quantity">{{deal.quantity}}</span>
                 <span class="field sold">
-                    {{deal.type === 0 ? deal.activePlayerId : deal.passivePlayerId}}
+                    {{deal.type === 0 ? getPlayerLabel(deal.activePlayerId) 
+                        : getPlayerLabel(deal.passivePlayerId)}}
                 </span>
                 <span class="field bought">
-                    {{deal.type === 1 ? deal.activePlayerId : deal.passivePlayerId}}
+                    {{deal.type === 1 ? getPlayerLabel(deal.activePlayerId) 
+                        : getPlayerLabel(deal.passivePlayerId)}}
                 </span>
             </p>
         </div>

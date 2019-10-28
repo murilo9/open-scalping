@@ -41,7 +41,7 @@ export class AppComponent {
 
   onNewGame(form: NewGameForm){
     this.gameStarted = true;
-    this.game = new Game(this.marketService, form);
+    this.game = new Game(this.marketService, this.gameService, form);
     this.router.navigateByUrl('/play');
   }
 }

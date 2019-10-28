@@ -1,10 +1,10 @@
 export class Player{
 
-    public id: Number;
-    public label: String;
+    public id: number;
+    public label: string;
     public human: boolean;
 
-    constructor(id: Number, label: String){
+    constructor(id: number, label: string){
         this.id = id;
         this.label = label;
         this.human = true;
