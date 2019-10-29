@@ -6,6 +6,7 @@ export class Deal{
     type: OfferType;
     activePlayerId: number;
     passivePlayerId: number;
+    time: Date;
 
     constructor(quantity: number, score: number, type: OfferType, 
     activePlayerId: number, passivePlayerId: number){
@@ -14,5 +15,6 @@ export class Deal{
         this.type = type;
         this.activePlayerId = activePlayerId;
         this.passivePlayerId = passivePlayerId;
+        this.time = new Date();
     }
 }

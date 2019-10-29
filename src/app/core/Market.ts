@@ -40,7 +40,7 @@ export class Market{
             //Se houver uma oferta de venda neste preço, fecha negócio:
             if(this.offerList[offer.score].status == OfferType.SALE){
                 do{     //Fecha negócio
-                    var dealSize = 0;
+                    let dealSize = 0;
                     do{     //Fecha negócio 
                         offer.quantity -= 1;
                         this.offerList[offer.score].queue[0].quantity -= 1;
@@ -48,7 +48,7 @@ export class Market{
                     }while   //...enquanto houverem lotes apregoados nesta oferta
                     (this.offerList[offer.score].queue[0].quantity > 0 && offer.quantity > 0);
                     //Registra um negócio, neste preço, com esta quantidade, no histórico de negócios:
-                    var deal = new Deal(dealSize, parseFloat(offer.score), offer.type, offer.sendingPlayerId, 
+                    const deal = new Deal(dealSize, parseFloat(offer.score), offer.type, offer.sendingPlayerId, 
                     this.offerList[offer.score].queue[0].sendingPlayerId);
                     this.dealList.push(deal);
                     this.marketService.dealListHasChanged(this.dealList);
@@ -74,7 +74,7 @@ export class Market{
             //Se houver uma oferta de compra neste preço, fecha negócio:
             if(this.offerList[offer.score].status == OfferType.PURCHASE){
                 do{     //Fecha negócio
-                    var dealSize = 0;
+                    let dealSize = 0;
                     do{     //Fecha negócio 
                         offer.quantity -= 1;
                         this.offerList[offer.score].queue[0].quantity -= 1;
@@ -82,7 +82,7 @@ export class Market{
                     }while   //...enquanto houverem lotes apregoados nesta oferta
                     (this.offerList[offer.score].queue[0].quantity > 0 && offer.quantity > 0);
                     //Registra um negócio, neste preço, com esta quantidade, no histórico de negócios:
-                    var deal = new Deal(dealSize, parseFloat(offer.score), offer.type, offer.sendingPlayerId, 
+                    const deal = new Deal(dealSize, parseFloat(offer.score), offer.type, offer.sendingPlayerId, 
                     this.offerList[offer.score].queue[0].sendingPlayerId);
                     this.dealList.push(deal);
                     this.marketService.dealListHasChanged(this.dealList);

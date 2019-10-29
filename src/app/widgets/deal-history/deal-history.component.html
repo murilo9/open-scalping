@@ -5,6 +5,7 @@
         <span class="field quantity">Qtd</span>
         <span class="field sold">Vendedor</span>
         <span class="field bought">Comprador</span>
+        <span class="field time">Hora</span>
     </p>
     <div class="deal-list" id="deal-list">
         <div class="deal-list-wrapper">
@@ -20,6 +21,7 @@
                     {{deal.type === 1 ? getPlayerLabel(deal.activePlayerId) 
                         : getPlayerLabel(deal.passivePlayerId)}}
                 </span>
+                <span class="field time">{{deal.time | date:'HH:mm:ss'}}</span>
             </p>
         </div>
     </div>
