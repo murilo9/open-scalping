@@ -17,7 +17,7 @@ export class Game{
         this.market = new Market(marketService, form);
         this.players.push(new Player(this.lastplayerId, 'XPI', marketService));     //Usuário sempre será da XP
         //Insere os players:
-        var playersQty = form.playersQty;
+        var playersQty = parseInt(form.playersQty);
         for(var i = 0; i < playersQty; i++){
             this.lastplayerId++;
             var label = this.botNames[Math.floor(Math.random()*5)];
