@@ -25,7 +25,7 @@ $inputBackgroundColor: #080808;
                 width: 176px;
                 text-align: right;
             }
-            input[type=number]{
+            input[type=text]{
                 outline: none;
                 border: 1px solid $onPrimaryColor;
                 background: $inputBackgroundColor;

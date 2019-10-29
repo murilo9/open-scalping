@@ -65,13 +65,13 @@ export class BulletComponent implements OnInit {
   }
 
   quantityIncrease(){
-    this.quantity = this.quantity + 1;
+    this.quantity = this.quantity + this.minimumOfferSize;
     this.quantityString = this.quantity.toString();
   }
 
   quantityDecrease(){
     if(this.quantity > this.minimumOfferSize){
-      this.quantity = this.quantity - 1;
+      this.quantity = this.quantity - this.minimumOfferSize;
       this.quantityString = this.quantity.toString();
     }
   }

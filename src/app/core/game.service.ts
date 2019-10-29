@@ -21,10 +21,10 @@ export class GameService {
    }
 
   public callNewGame(form: NewGameForm){
-    this.initialPurchasePrice = form.initialPurchasePrice;
-    this.initialSalePrice = form.initialSalePrice;
-    this.minimumOfferSize = form.minimumOfferSize;
-    this.tickSize = form.tickSize;
+    this.initialPurchasePrice = parseFloat(form.initialPurchasePrice);
+    this.initialSalePrice = parseFloat(form.initialSalePrice);
+    this.minimumOfferSize = parseInt(form.minimumOfferSize);
+    this.tickSize = parseFloat(form.tickSize);
     this.newGameSubject.next(form);
   }
 

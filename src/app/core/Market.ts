@@ -25,8 +25,8 @@ export class Market{
     constructor(private marketService: MarketService, form: NewGameForm){
         this.offerList = {};
         this.dealList = [];
-        this.tickSize = form.tickSize;
-        this.minimumOfferSize = form.minimumOfferSize;
+        this.tickSize = parseFloat(form.tickSize);
+        this.minimumOfferSize = parseInt(form.minimumOfferSize);
     }
 
     public makeOffer(offer: Offer){

@@ -22,16 +22,12 @@ export class AppComponent {
   subscription1: Subscription;
   subscription2: Subscription;
   public game: Game;
-  initialPurchasePrice: Number;
-  initialSalePrice: Number;
 
   constructor(
     private gameService: GameService, 
     private marketService: MarketService,
     private router: Router){
     this.subscription1 = gameService.newGameCalled$.subscribe((form: NewGameForm) => {
-      this.initialPurchasePrice = form.initialPurchasePrice;
-      this.initialSalePrice = form.initialSalePrice;
       this.onNewGame(form);
     })
     this.subscription2 = marketService.offerSent$.subscribe((offer) => {
