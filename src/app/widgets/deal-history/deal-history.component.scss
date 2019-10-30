@@ -1,7 +1,9 @@
 $sufaceColor: #1f1f1f;
 $onPrimaryColor: #e2e2e2;
 $backgroundColor: #121212;
-$shadowColor: rgba(0,0,0,0.5);
+$shadowColor: #050505;
+$inputBackgroundColor: #080808;
+$inputBorderColor: #888;
 
 .deal-history{
     display: inline-flex;
@@ -30,7 +32,7 @@ $shadowColor: rgba(0,0,0,0.5);
             color: green;
         }
         &.activeBought{
-            color: red;
+            color: hsl(0, 80%, 60%);
         }
         .field, .subtitle>.field{
             display: inline-block;

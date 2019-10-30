@@ -5,8 +5,6 @@ import { Game } from './core/Game';
 import { GameService } from './core/game.service';
 import { MarketService } from './shared/market.service';
 import { Subscription } from 'rxjs';
-import { Offer } from './shared/Offer';
-import { OfferType } from './shared/OfferType';
 import { NewGameForm } from './core/NewGameForm';
 
 @Component({
@@ -37,7 +35,7 @@ export class AppComponent {
 
   onNewGame(form: NewGameForm){
     this.gameStarted = true;
-    this.game = new Game(this.marketService, this.gameService, form);
+    this.game = new Game(this.marketService, this.gameService, this, form);
     this.router.navigateByUrl('/play');
   }
 }
