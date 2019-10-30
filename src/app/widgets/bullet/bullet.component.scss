@@ -3,6 +3,7 @@ $onPrimaryColor: #e2e2e2;
 $backgroundColor: #121212;
 $shadowColor: rgba(0,0,0,0.5);
 $inputBackgroundColor: #080808;
+$inputBorderColor: #888;
 
 .bullet{
     display: inline-block;
@@ -27,7 +28,7 @@ $inputBackgroundColor: #080808;
                 margin-bottom: 24px;
             }
             .value-input{
-                border: 1px solid $onPrimaryColor;
+                border: 1px solid $inputBorderColor;
                 border-radius: 4px;
                 .button{
                     background: none;
@@ -40,8 +41,8 @@ $inputBackgroundColor: #080808;
                     background: $backgroundColor;
                     border-top: none;
                     border-bottom: none;
-                    border-left: 1px solid $onPrimaryColor;
-                    border-right: 1px solid $onPrimaryColor;
+                    border-left: 1px solid $inputBorderColor;
+                    border-right: 1px solid $inputBorderColor;
                     height: 24px;
                     color: $onPrimaryColor;
                     text-align: center;
@@ -50,7 +51,7 @@ $inputBackgroundColor: #080808;
                         margin-right: 8px;
                     }
                     &.sell{
-                        color: red;
+                        color: hsl(0, 60%, 50%);
                     }
                     &.buy{
                         color: green;

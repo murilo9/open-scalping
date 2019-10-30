@@ -18,9 +18,9 @@ export class BulletComponent implements OnInit {
 
   constructor(private gameService: GameService, private marketService: MarketService) { 
     this.price = gameService.initialSalePrice;
-    this.priceString = this.price.toFixed(2);
+    this.priceString = gameService.initialSalePrice.toFixed(2);
     this.quantity = gameService.minimumOfferSize;
-    this.quantityString = this.quantity.toString();
+    this.quantityString = gameService.minimumOfferSize.toString();
     this.tick = gameService.tickSize;
     this.minimumOfferSize = gameService.minimumOfferSize;
   }

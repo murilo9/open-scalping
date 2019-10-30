@@ -14,11 +14,11 @@
                 <span class="field score">{{deal.score | currency:' '}}</span>
                 <span class="field quantity">{{deal.quantity}}</span>
                 <span class="field sold">
-                    {{deal.type === 0 ? getPlayerLabel(deal.activePlayerId) 
+                    {{deal.type === 1 ? getPlayerLabel(deal.activePlayerId) 
                         : getPlayerLabel(deal.passivePlayerId)}}
                 </span>
                 <span class="field bought">
-                    {{deal.type === 1 ? getPlayerLabel(deal.activePlayerId) 
+                    {{deal.type === 0 ? getPlayerLabel(deal.activePlayerId) 
                         : getPlayerLabel(deal.passivePlayerId)}}
                 </span>
                 <span class="field time">{{deal.time | date:'HH:mm:ss'}}</span>

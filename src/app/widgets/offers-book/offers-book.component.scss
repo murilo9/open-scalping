@@ -11,6 +11,7 @@ $inputBackgroundColor: #080808;
     padding: 8px;
     border-radius: 4px;
     .title{
+        font-weight: bold;
         text-align: center;
         margin-bottom: 8px;
     }
@@ -22,9 +23,6 @@ $inputBackgroundColor: #080808;
         span{
             display: inline-block;
             text-align: center;
-        }
-        .titles{
-            font-weight: bold;
         }
         .total{
             width: 48px;
@@ -40,7 +38,7 @@ $inputBackgroundColor: #080808;
     }
     .sale{
         .offer .price{
-            color: red;
+            color: hsl(0, 80%, 60%);
         }
     }
 }
