@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { Deal } from '../core/Deal';
 import { OfferType } from '../core/OfferType';
 import { Offer } from '../core/Offer';
-import { Market } from '../core/Market';
+import { Market, OfferScore } from '../core/Market';
 import { NewGameForm } from '../core/NewGameForm';
 
 @Injectable({
@@ -13,7 +13,7 @@ import { NewGameForm } from '../core/NewGameForm';
 export class MarketService {
 
   public market: Market;
-  private offerListSubject = new Subject<Object>();
+  private offerListSubject = new Subject<Array<OfferScore>>();
   public offerListChanged$ = this.offerListSubject.asObservable();
   private dealListSubject = new Subject<Array<Deal>>();
   public dealListChanged$ = this.dealListSubject.asObservable();
@@ -26,7 +26,7 @@ export class MarketService {
     this.market = new Market(this, form);
   }
 
-  public offerListHasChanged(offerList: Object){
+  public offerListHasChanged(offerList: Array<OfferScore>){
     this.offerListSubject.next(offerList);    //Isto será emitido para os widgets
   }
 

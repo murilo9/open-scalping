@@ -20,27 +20,25 @@ export class OffersBookComponent {
     this.saleOffersList = [];
     this.subscription1 = marketService.offerListChanged$.subscribe((offersList) => {
       //Recebe o atributo offerList da classe Market e atribui ao purchaseOffersList ou saleOffersList:
-      this.refreshOffers(offersList);
+      this.refreshOffers(offersList)
     })
   }
 
-  refreshOffers(offersList: Object){    //offersList é um objeto onde cada chave é um score
+  refreshOffers(offersList: Array<OfferScore>){    //offersList é um objeto onde cada chave é um score
     //Zera as listas, visto que elas serão reconstruídas:
     this.purchaseOffersList = [];
     this.saleOffersList = [];
     //Reconstrói as listas:
-    for(var score in offersList){   //Para cada score na lista de ofertas por nível de pontuação...
+    offersList.forEach((offerScore, os) => {   //Para cada score na lista de ofertas por nível de pontuação...
       //Se a oferta a ser inserida for de compra:
-      if(offersList[score].status === OfferType.PURCHASE){
-        this.purchaseOffersList.push(offersList[score]);
+      if(offerScore.status === OfferType.PURCHASE){
+        this.purchaseOffersList.push(offerScore);
       }
       //Se a oferta a ser inserida for de venda:
-      else if(offersList[score].status === OfferType.SALE){
-        this.saleOffersList.push(offersList[score]);
+      else if(offerScore.status === OfferType.SALE){
+        this.saleOffersList.push(offerScore);
       }
-      else
-        console.log('Erro, tipo de offer score não identificado: ' + offersList[score].status)
-    }
+    })
     //Ordena as litas de ofertas:
     this.sortOffers();
   }
@@ -84,5 +82,6 @@ export class OffersBookComponent {
       this.saleOffersList.push(sortedOffer);
     })
     this.saleOffersList.reverse();
+    console.log(this.saleOffersList)
   }
 }

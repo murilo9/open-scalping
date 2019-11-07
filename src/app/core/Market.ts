@@ -76,7 +76,7 @@ export class Market{
                 do{     //Instancia preços pra baixo até o score existir
                     this.offerList.unshift({
                         score: bottomScore - (i * this.tickSize), 
-                        status: null, 
+                        status: OfferType.SALE, 
                         total: 0, 
                         queue: []
                     });
@@ -136,6 +136,7 @@ export class Market{
                 }
             }
             else{        //Caso a oferta esteja abaixo do melhor preço de venda, apregoa:
+                this.offerList[index].status = offer.type;
                 this.teaseOffer(offer);
             }
         }
@@ -150,7 +151,7 @@ export class Market{
                 do{     //Instancia preços pra baixo até o score existir
                     this.offerList.unshift({
                         score: botromScore - (i * this.tickSize), 
-                        status: null, 
+                        status: OfferType.PURCHASE, 
                         total: 0, 
                         queue: []
                     });
@@ -209,6 +210,7 @@ export class Market{
                 }
             }
             else{        //Caso a oferta esteja abaixo do melhor preço de venda, apregoa:
+                this.offerList[index].status = offer.type;
                 this.teaseOffer(offer);
             }
         }
@@ -239,7 +241,7 @@ export class Market{
         this.offerList[index].queue.forEach((offer, o) => {
             total += offer.quantity;
         })
-        return total;
+        this.offerList[index].total = total;
     }
 
     /**
@@ -248,11 +250,10 @@ export class Market{
     private teaseOffer(offer: Offer){
         this.offerList.forEach((offerScore, os) => {
             if(offerScore.score === offer.score){
-                console.log('tentando fazer o push')
                 offerScore.queue.push(offer);
-                console.log(this.offerList)
             }
         })
+        this.rebuildScoreTotal(offer.score);
     }
 
     /**
@@ -264,7 +265,6 @@ export class Market{
             if(offerScore.score === score)
                 scoreIndex = os;
         })
-        console.log(scoreIndex)
         return scoreIndex;
     }
 
