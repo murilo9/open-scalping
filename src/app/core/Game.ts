@@ -3,10 +3,10 @@ import { Player } from './Player';
 import { BotPlayer } from './BotPlayer';
 import { MarketService } from '../shared/market.service';
 import { NewGameForm } from './NewGameForm';
-import { GameService } from './game.service';
+import { GameService } from '../shared/game.service';
 
 export class Game{
-    market: Market;
+    //market: Market;
     players: Array<Player> = [];
     lastplayerId = 1;
     botNames: Array<string> = [
@@ -14,7 +14,7 @@ export class Game{
     ]
 
     constructor(private marketService: MarketService, private gameService: GameService, appComponent, form: NewGameForm){
-        this.market = new Market(marketService, form);
+        
         this.players.push(new Player(this.lastplayerId, 'XPI', marketService));     //Usuário sempre será da XP
         //Insere os players:
         /*var playersQty = parseInt(form.playersQty);
@@ -30,8 +30,8 @@ export class Game{
         this.players.push(new BotPlayer(this.lastplayerId, 'Bradesco',
         marketService, gameService, appComponent));
         this.players.push(new BotPlayer(this.lastplayerId, 'Santander', 
-        marketService, gameService, appComponent));*/
+        marketService, gameService, appComponent));
         //Após terminar de construir a lista de players, registra ele no gameService:
-        gameService.setPlayersList(this.players);
+        gameService.setPlayersList(this.players);*/
     }
 }

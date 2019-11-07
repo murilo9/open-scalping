@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MarketService } from 'src/app/shared/market.service';
 import { Subscription, of } from 'rxjs';
-import { OfferType } from 'src/app/shared/OfferType';
+import { OfferType } from 'src/app/core/OfferType';
 import { OfferScore } from 'src/app/core/Market';
 
 @Component({
@@ -53,8 +53,8 @@ export class OffersBookComponent {
       let maxScore = 0;
       let index = -1;
       this.purchaseOffersList.forEach((offerScore, os) => {
-        if(parseFloat(offerScore.score) > maxScore){
-          maxScore = parseFloat(offerScore.score);
+        if(offerScore.score > maxScore){
+          maxScore = offerScore.score;
           index = os;
         }
       })
@@ -72,8 +72,8 @@ export class OffersBookComponent {
       let maxScore = 0;
       let index = -1;
       this.saleOffersList.forEach((offerScore, os) => {
-        if(parseFloat(offerScore.score) > maxScore){
-          maxScore = parseFloat(offerScore.score);
+        if(offerScore.score > maxScore){
+          maxScore = offerScore.score;
           index = os;
         }
       })

@@ -1,5 +1,5 @@
 import { MarketService } from '../shared/market.service';
-import { GameService } from './game.service';
+import { GameService } from '../shared/game.service';
 
 export class Player{
 

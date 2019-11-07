@@ -1,6 +1,6 @@
 import { Player } from './Player';
 import { MarketService } from '../shared/market.service';
-import { GameService } from './game.service';
+import { GameService } from '../shared/game.service';
 import { AppComponent } from '../app.component';
 
 export class BotPlayer extends Player{
@@ -22,8 +22,8 @@ export class BotPlayer extends Player{
         //Por enquanto o Bradesco sempre será o provedor da liquidez inicial:
         if(label === 'Bradesco'){       
             setTimeout(() => {
-                let purchasePrice = parseFloat(appComponent.game.market.getBestPurchaseScore());
-                let salePrice = parseFloat(appComponent.game.market.getBestSaleScore());
+                let purchasePrice = this.marketService.getBestPurchaseScore();
+                let salePrice = this.marketService.getBestSaleScore();
                 this.marketService.makePurchaseOffer(this.id, purchasePrice, 10);
                 this.marketService.makeSaleOffer(this.id, salePrice, 10);
             }, 10)
@@ -34,12 +34,12 @@ export class BotPlayer extends Player{
         let buyOrSell = Math.random() > 0.5 ? true : false;
         let quantity = Math.floor(Math.random()*10);
         if(buyOrSell){      //Comprar
-            let offerPrice = parseFloat(this.appComponent.game.market.getBestPurchaseScore()) - 
+            let offerPrice = this.marketService.getBestPurchaseScore() - 
             Math.floor(-2 + Math.random()*12)*this.gameService.tickSize;
             this.marketService.makePurchaseOffer(this.id, offerPrice, quantity);
         }
         else{       //Vender
-            let offerPrice = parseFloat(this.appComponent.game.market.getBestPurchaseScore()) + 
+            let offerPrice = this.marketService.getBestPurchaseScore() + 
             Math.floor(-2 + Math.random()*12)*this.gameService.tickSize;
             this.marketService.makeSaleOffer(this.id, offerPrice, quantity);
         }
