@@ -93,17 +93,17 @@ export class Market{
                     if(dealResult > 0){   //Caso a oferta apregoada não tenha sido totalmente consumida
                         //Fecha o negócio:
                         this.offerList[bestPriceIndex].queue[0].quantity -= offer.quantity;
-                        offer.quantity = 0;
                         let deal = new Deal(offer.quantity, bestPrice, offer.type, 
                         offer.sendingPlayerId, this.offerList[bestPriceIndex].queue[0].sendingPlayerId);
+                        offer.quantity = 0;
                         this.dealList.push(deal);
                     }
                     //Caso a oferta apregoada tenha sido totalmente consumida:
                     else if(dealResult === 0){      
                         //Fecha o negócio:
-                        offer.quantity = 0;
                         let deal = new Deal(offer.quantity, bestPrice, offer.type, 
                         offer.sendingPlayerId, this.offerList[bestPriceIndex].queue[0].sendingPlayerId);
+                        offer.quantity = 0;
                         this.dealList.push(deal);
                         //Elimina a oferta apregoada da fila desta pontuação:
                         this.offerList[bestPriceIndex].queue.splice(0, 1);   
@@ -133,6 +133,9 @@ export class Market{
                         this.teaseOffer(offer);
                     }
                 }
+
+                //Finalmente, emite o evento avisando que o histórico de negócios mudou:
+                this.marketService.dealListHasChanged(this.dealList);
             }
             else{        //Caso a oferta esteja abaixo do melhor preço de venda, apregoa:
                 let offerIndex = this.getScoreIndex(offer.score);
@@ -167,17 +170,17 @@ export class Market{
                     if(dealResult > 0){   //Caso a oferta apregoada não tenha sido totalmente consumida
                         //Fecha o negócio:
                         this.offerList[bestPriceindex].queue[0].quantity -= offer.quantity;
-                        offer.quantity = 0;
                         let deal = new Deal(offer.quantity, bestPrice, offer.type, 
                         offer.sendingPlayerId, this.offerList[bestPriceindex].queue[0].sendingPlayerId);
+                        offer.quantity = 0;
                         this.dealList.push(deal);
                     }
                     //Caso a oferta apregoada tenha sido totalmente consumida:
                     else if(dealResult === 0){      
                         //Fecha o negócio:
-                        offer.quantity = 0;
                         let deal = new Deal(offer.quantity, bestPrice, offer.type, 
                         offer.sendingPlayerId, this.offerList[bestPriceindex].queue[0].sendingPlayerId);
+                        offer.quantity = 0;
                         this.dealList.push(deal);
                         //Elimina a oferta apregoada da fila desta pontuação:
                         this.offerList[bestPriceindex].queue.splice(0, 1);   
@@ -207,6 +210,9 @@ export class Market{
                         this.teaseOffer(offer);
                     }
                 }
+
+                //Finalmente, emite o evento avisando que o histórico de negócios mudou:
+                this.marketService.dealListHasChanged(this.dealList);
             }
             else{        //Caso a oferta esteja abaixo do melhor preço de venda, apregoa:
                 let offerIndex = this.getScoreIndex(offer.score);
