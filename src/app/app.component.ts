@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Game } from './core/Game';
-import { GameService } from './core/game.service';
+import { GameService } from './shared/game.service';
 import { MarketService } from './shared/market.service';
 import { Subscription } from 'rxjs';
 import { NewGameForm } from './core/NewGameForm';
@@ -28,14 +28,12 @@ export class AppComponent {
     this.subscription1 = gameService.newGameCalled$.subscribe((form: NewGameForm) => {
       this.onNewGame(form);
     })
-    this.subscription2 = marketService.offerSent$.subscribe((offer) => {
-      this.game.market.makeOffer(offer);
-    })
   }
 
   onNewGame(form: NewGameForm){
     this.gameStarted = true;
     this.game = new Game(this.marketService, this.gameService, this, form);
+    this.marketService.startMarket(form);
     this.router.navigateByUrl('/play');
   }
 }

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { MarketService } from '../../shared/market.service';
-import { Deal } from 'src/app/shared/Deal';
-import { GameService } from 'src/app/core/game.service';
+import { Deal } from 'src/app/core/Deal';
+import { GameService } from 'src/app/shared/game.service';
 
 @Component({
   selector: 'app-deal-history',

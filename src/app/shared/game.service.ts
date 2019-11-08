@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { NewGameForm } from './NewGameForm';
-import { Player } from './Player';
+import { NewGameForm } from '../core/NewGameForm';
+import { Player } from '../core/Player';
 
 @Injectable({
   providedIn: 'root'

@@ -1,7 +1,7 @@
-import { Offer } from '../shared/Offer';
-import { Deal } from '../shared/Deal';
+import { Offer } from './Offer';
+import { Deal } from './Deal';
 
-import { OfferType } from '../shared/OfferType';
+import { OfferType } from './OfferType';
 import { MarketService } from '../shared/market.service';
 import { NewGameForm } from './NewGameForm';
 
@@ -9,7 +9,7 @@ import { NewGameForm } from './NewGameForm';
  * A forma que as ofertas aparecem no book de ofertas (ordenadas por score): um array de OfferScore
  */
 export interface OfferScore {
-    score: string,
+    score: number,
     status: OfferType, 
     total: number, 
     queue: Array<Offer>
@@ -17,7 +17,7 @@ export interface OfferScore {
 
 export class Market{
     
-    offerList: Object;     //Lista de ofertas por ordem de pontuação (score)
+    offerList: Array<OfferScore>;     //Lista de ofertas por ordem de pontuação (score)
     dealList: Array<Deal>;      //Lista de negócios fechados ordenados por tempo
     tickSize: number;       //Variação mínima da pontuação
     minimumOfferSize: number;       //Quantidade mínima de lotes por oferta
@@ -25,151 +25,278 @@ export class Market{
     initialSalePrice: number;
 
     constructor(private marketService: MarketService, form: NewGameForm){
-        this.offerList = {};
         this.dealList = [];
+        this.offerList = [];
         this.tickSize = parseFloat(form.tickSize);
         this.minimumOfferSize = parseInt(form.minimumOfferSize);
         this.initialPurchasePrice = parseFloat(form.initialPurchasePrice);
         this.initialSalePrice = parseFloat(form.initialSalePrice);
-        //setInterval(() => {this.logPrices()}, 5000);
+        //Constrói a base da lista de ofertas:
+        this.offerList.push({
+            score: parseFloat(form.initialSalePrice), 
+            status: null,
+            total: 0,
+            queue: []
+        })
+        for(let i = 1; i < 30; i++){    //Constrói o DOM de venda
+            let score = parseFloat(form.initialSalePrice) + (i * parseFloat(form.tickSize));
+            this.offerList.push({
+                score: score, 
+                status: null, 
+                total: 0, 
+                queue: []
+            });
+        }
+        this.offerList.unshift({
+            score: parseFloat(form.initialPurchasePrice), 
+            status: null,
+            total: 0,
+            queue: []
+        })
+        for(let i = 1; i < 30; i++){    //Constrói o DOM de compra
+            let score = parseFloat(form.initialPurchasePrice) - (i * parseFloat(form.tickSize));
+            this.offerList.unshift({
+                score: score, 
+                status: null, 
+                total: 0, 
+                queue: []
+            });
+        }
     }
 
     public makeOffer(offer: Offer){
-        console.log(offer)
-        //Instancia este preço caso ele ainda não tenha sido instanciado
-        if(this.offerList[offer.score] === undefined || this.offerList[offer.score].total == 0){
-            console.log('score inexistente no offerList ('+offer.score+'), instanciando')
-            this.offerList[offer.score] = {status: offer.type, score: offer.score, total: 0, queue: []}
-        }
+        //--------------------- Se for uma oferta de COMPRA ---------------------
+        if(offer.type === OfferType.PURCHASE){
 
-        //--------------- Se for uma oferta de COMPRA ---------------
-        if(offer.type == OfferType.PURCHASE){   
-            //Se houver uma oferta de venda neste preço, fecha negócio:
-            if(this.offerList[offer.score].status == OfferType.SALE ||
-            parseFloat(offer.score) >= parseFloat(this.getBestSaleScore())){
-                //A compra é feita necessariamente no melhor preço do mercado:
-                let bestScore = this.getBestSaleScore();     
-                do{     //Fecha negócio
-                    let dealSize = 0;
-                    do{     //Fecha negócio 
-                        offer.quantity -= 1;
-                        console.log(this.offerList[bestScore])
-                        this.offerList[bestScore].queue[0].quantity -= 1;
-                        dealSize += 1;
-                    }while   //...enquanto houverem lotes apregoados nesta oferta
-                    (this.offerList[bestScore].queue[0].quantity > 0 && offer.quantity > 0);
-                    //Registra um negócio, neste preço, com esta quantidade, no histórico de negócios:
-                    const deal = new Deal(dealSize, parseFloat(bestScore), offer.type, offer.sendingPlayerId, 
-                    this.offerList[bestScore].queue[0].sendingPlayerId);
-                    this.dealList.push(deal);
-                    this.marketService.dealListHasChanged(this.dealList);
-                    //Remove a oferta apregoada da lista caso ela tenha sido totalmente fechada:
-                    if(this.offerList[bestScore].queue[0].quantity == 0){
-                        this.offerList[bestScore].queue.splice(0, 1);
+            //Se o score da oferta ainda não tiver sido instanciado:
+            if(this.scoreExists(offer.score) === -1){
+                let i = 1;
+                let bottomScore = this.offerList[0].score;
+                do{     //Instancia preços pra baixo até o score existir
+                    this.offerList.unshift({
+                        score: bottomScore - (i * this.tickSize), 
+                        status: OfferType.PURCHASE, 
+                        total: 0, 
+                        queue: []
+                    });
+                    i++;
+                }while(this.scoreExists(offer.score) === -1);
+            }
+            
+            
+            const bestPrice = this.getBestSaleScore();
+            let bestPriceIndex = this.getScoreIndex(bestPrice);
+            //Caso a oferta esteja acima ou igual o melhor preço de venda e este preço tenha ofertas apregoadas:
+            if(offer.score >= bestPrice && this.offerList[bestPriceIndex].status === OfferType.SALE){
+                do {    //Fecha os negócios no melhor preço:
+                    let dealResult = this.offerList[bestPriceIndex].queue[0].quantity - offer.quantity;
+                    if(dealResult > 0){   //Caso a oferta apregoada não tenha sido totalmente consumida
+                        //Fecha o negócio:
+                        this.offerList[bestPriceIndex].queue[0].quantity -= offer.quantity;
+                        let deal = new Deal(offer.quantity, bestPrice, offer.type, 
+                        offer.sendingPlayerId, this.offerList[bestPriceIndex].queue[0].sendingPlayerId);
+                        offer.quantity = 0;
+                        this.dealList.push(deal);
                     }
-                }while      //...enquanto houverem ofertas de venda apregoadas neste preço
-                (this.offerList[bestScore].queue.length > 0 && offer.quantity > 0);
-                //Caso a oferta não tenha sido totalmente fechada, deixa o restante apregoado neste preço:
-                if(offer.quantity > 0){
-                    this.offerList[bestScore].queue.push(offer);
-                    this.offerList[bestScore].status = OfferType.PURCHASE;    //Atualiza o status deste preço
-                }
-            }
-            else{       //Caso contrário, deixa a oferta apregoada nesta pontuação:
-                this.offerList[offer.score].queue.push(offer);
-            }
-        }
-
-        //--------------- Se for uma oferta de VENDA ---------------
-        if(offer.type == OfferType.SALE){   
-            //Se houver uma oferta de compra neste preço, fecha negócio:
-            if(this.offerList[offer.score].status == OfferType.PURCHASE ||
-            parseFloat(offer.score) <= parseFloat(this.getBestPurchaseScore())){
-                //A venda é feita necessariamente no melhor preço do mercado:
-                let bestScore = this.getBestPurchaseScore(); 
-                do{     //Fecha negócio
-                    let dealSize = 0;
-                    do{     //Fecha negócio 
-                        offer.quantity -= 1;
-                        console.log(this.offerList[bestScore])
-                        this.offerList[bestScore].queue[0].quantity -= 1;
-                        dealSize += 1;
-                    }while   //...enquanto houverem lotes apregoados nesta oferta
-                    (this.offerList[bestScore].queue[0].quantity > 0 && offer.quantity > 0);
-                    //Registra um negócio, neste preço, com esta quantidade, no histórico de negócios:
-                    const deal = new Deal(dealSize, parseFloat(bestScore), offer.type, offer.sendingPlayerId, 
-                    this.offerList[bestScore].queue[0].sendingPlayerId);
-                    this.dealList.push(deal);
-                    this.marketService.dealListHasChanged(this.dealList);
-                    //Remove a oferta apregoada da lista caso ela tenha sido totalmente fechada:
-                    if(this.offerList[bestScore].queue[0].quantity == 0){
-                        this.offerList[bestScore].queue.splice(0, 1);
+                    //Caso a oferta apregoada tenha sido totalmente consumida:
+                    else if(dealResult === 0){      
+                        //Fecha o negócio:
+                        let deal = new Deal(offer.quantity, bestPrice, offer.type, 
+                        offer.sendingPlayerId, this.offerList[bestPriceIndex].queue[0].sendingPlayerId);
+                        offer.quantity = 0;
+                        this.dealList.push(deal);
+                        //Elimina a oferta apregoada da fila desta pontuação:
+                        this.offerList[bestPriceIndex].queue.splice(0, 1);   
                     }
-                }while      //...enquanto houverem ofertas de compra apregoadas neste preço
-                (this.offerList[bestScore].queue.length > 0 && offer.quantity > 0);
-                //Caso a oferta não tenha sido totalmente fechada, deixa o restante apregoado neste preço:
-                if(offer.quantity > 0){
-                    this.offerList[bestScore].queue.push(offer);
-                    this.offerList[bestScore].status = OfferType.SALE;    //Atualiza o status deste preço
+                    else{   //Caso a oferta apregoada tenha sido totalmente consumida e ainda sobrar compra
+                        //Fecha o negócio:
+                        offer.quantity -= this.offerList[bestPriceIndex].queue[0].quantity;
+                        let deal = new Deal(this.offerList[bestPriceIndex].queue[0].quantity, bestPrice, offer.type, 
+                        offer.sendingPlayerId, this.offerList[bestPriceIndex].queue[0].sendingPlayerId);
+                        this.dealList.push(deal);
+                        //Elimina a oferta apregoada da fila desta pontuação:
+                        this.offerList[bestPriceIndex].queue.splice(0, 1);
+                    }
+                    //Finalmente, recalcula o total de ofertas nesta pontuação:
+                    this.rebuildScoreTotal(bestPrice);
+                }while(offer.quantity > 0 && this.offerList[bestPriceIndex].total > 0);
+
+                //Caso todas as ofertas desta pontuação tenham sido esgotadas:
+                if(this.offerList[bestPriceIndex].total === 0){
+                    //Deixa em status neutro:
+                    this.offerList[bestPriceIndex].status = null;
+                    if(offer.quantity > 0){
+                        //Transforma esta pontuação em compra:
+                        this.offerList[bestPriceIndex].status = OfferType.PURCHASE;
+                        //Deixa o restante apregoado nesta pontuação:
+                        offer.score = bestPrice;
+                        this.teaseOffer(offer);
+                    }
                 }
+
+                //Finalmente, emite o evento avisando que o histórico de negócios mudou:
+                this.marketService.dealListHasChanged(this.dealList);
             }
-            else{       //Caso contrário, deixa a oferta apregoada nesta pontuação:
-                this.offerList[offer.score].queue.push(offer);
+            else{        //Caso a oferta esteja abaixo do melhor preço de venda, apregoa:
+                let offerIndex = this.getScoreIndex(offer.score);
+                this.offerList[offerIndex].status = offer.type;
+                this.teaseOffer(offer);
             }
         }
 
-        this.refreshOfferList(offer.score)      //Finalmente, atualiza o total de ofertas neste preço:
+        //--------------------- Se for uma oferta de VENDA ---------------------
+        else if(offer.type === OfferType.SALE){
+            //Se o score da oferta ainda não tiver sido instanciado:
+            if(this.scoreExists(offer.score) === -1){
+                let i = 1;
+                let bottomScore = this.offerList[0].score;
+                do{     //Instancia preços pra baixo até o score existir
+                    this.offerList.unshift({
+                        score: bottomScore - (i * this.tickSize), 
+                        status: OfferType.SALE, 
+                        total: 0, 
+                        queue: []
+                    });
+                    i++;
+                }while(this.scoreExists(offer.score) === -1);
+            }
+
+            //Caso a oferta esteja acima ou igual o melhor preço de compra e este preço tenha ofertas apregoadas:
+            const bestPrice = this.getBestPurchaseScore();
+            let bestPriceindex = this.getScoreIndex(bestPrice);
+            if(offer.score <= bestPrice && this.offerList[bestPriceindex].status === OfferType.PURCHASE){
+                do {    //Fecha os negócios no melhor preço:
+                    let dealResult = this.offerList[bestPriceindex].queue[0].quantity - offer.quantity;
+                    if(dealResult > 0){   //Caso a oferta apregoada não tenha sido totalmente consumida
+                        //Fecha o negócio:
+                        this.offerList[bestPriceindex].queue[0].quantity -= offer.quantity;
+                        let deal = new Deal(offer.quantity, bestPrice, offer.type, 
+                        offer.sendingPlayerId, this.offerList[bestPriceindex].queue[0].sendingPlayerId);
+                        offer.quantity = 0;
+                        this.dealList.push(deal);
+                    }
+                    //Caso a oferta apregoada tenha sido totalmente consumida:
+                    else if(dealResult === 0){      
+                        //Fecha o negócio:
+                        let deal = new Deal(offer.quantity, bestPrice, offer.type, 
+                        offer.sendingPlayerId, this.offerList[bestPriceindex].queue[0].sendingPlayerId);
+                        offer.quantity = 0;
+                        this.dealList.push(deal);
+                        //Elimina a oferta apregoada da fila desta pontuação:
+                        this.offerList[bestPriceindex].queue.splice(0, 1);   
+                    }
+                    else{   //Caso a oferta apregoada tenha sido totalmente consumida e ainda sobrar compra
+                        //Fecha o negócio:
+                        offer.quantity -= this.offerList[bestPriceindex].queue[0].quantity;
+                        let deal = new Deal(this.offerList[bestPriceindex].queue[0].quantity, bestPrice, offer.type, 
+                        offer.sendingPlayerId, this.offerList[bestPriceindex].queue[0].sendingPlayerId);
+                        this.dealList.push(deal);
+                        //Elimina a oferta apregoada da fila desta pontuação:
+                        this.offerList[bestPriceindex].queue.splice(0, 1);
+                    }
+                    //Finalmente, recalcula o total de ofertas nesta pontuação:
+                    this.rebuildScoreTotal(bestPrice);
+                }while(offer.quantity > 0 && this.offerList[bestPriceindex].total > 0);
+
+                //Caso todas as ofertas desta pontuação tenham sido esgotadas:
+                if(this.offerList[bestPriceindex].total === 0){
+                    //Deixa em status neutro:
+                    this.offerList[bestPriceindex].status = null;
+                    if(offer.quantity > 0){
+                        //Transforma esta pontuação em compra:
+                        this.offerList[bestPriceindex].status = OfferType.SALE;
+                        //Deixa o restante apregoado nesta pontuação:
+                        offer.score = bestPrice;
+                        this.teaseOffer(offer);
+                    }
+                }
+
+                //Finalmente, emite o evento avisando que o histórico de negócios mudou:
+                this.marketService.dealListHasChanged(this.dealList);
+            }
+            else{        //Caso a oferta esteja abaixo do melhor preço de venda, apregoa:
+                let offerIndex = this.getScoreIndex(offer.score);
+                this.offerList[offerIndex].status = offer.type;
+                this.teaseOffer(offer);
+            }
+        }
+
+        //Por último, emite o evento de atualizar a lista de ofertas:
         this.marketService.offerListHasChanged(this.offerList);
-        console.log('----------- momento ---------------')
-        console.log(this.offerList);
-        //console.log(this.dealList);
-        return status;      //Retorna o status da operação ('offered'/'parcial'/'total')
+    }
+
+    private scoreExists(score: number){
+        let found = false;
+        let i = 0;
+        let scoreIndex
+        while(!found && i < this.offerList.length){
+            if(this.offerList[i].score === score)
+                found = true;
+                scoreIndex = i;
+            i++;
+        }
+        return scoreIndex;
     }
 
     /**
-     * Atualiza e reacalcula o total de ofertas neste preço
+     * Recaulcula o total de ofertas na pontuação especificada, após o fechamento de negócios
      */
-    private refreshOfferList(score: string){
-        this.offerList[score].total = 0;
-        this.offerList[score].queue.forEach((existingOffer, eoIndex) => {
-            this.offerList[score].total += existingOffer.quantity;
+    private rebuildScoreTotal(score: number){
+        let index = this.getScoreIndex(score);
+        let total = 0;
+        this.offerList[index].queue.forEach((offer, o) => {
+            total += offer.quantity;
         })
+        this.offerList[index].total = total;
     }
 
     /**
-     * Retorna o melhor (maior) preço de compra do mercado, em string
+     * Apregoa a oferta na pontuação dela
+     */
+    private teaseOffer(offer: Offer){
+        this.offerList.forEach((offerScore, os) => {
+            if(offerScore.score === offer.score){
+                offerScore.queue.push(offer);
+            }
+        })
+        this.rebuildScoreTotal(offer.score);
+    }
+
+    /**
+     * Retorna o índice da pontuação na lista de ofertas
+     */
+    private getScoreIndex(score: number){
+        let scoreIndex = -1;
+        this.offerList.forEach((offerScore, os) => {
+            if(offerScore.score === score)
+                scoreIndex = os;
+        })
+        return scoreIndex;
+    }
+
+    /**
+     * Retorna o valor do MAIOR preço que o mercado está comprando
      */
     public getBestPurchaseScore(){
-        let maxScore = '';
-        let maxScoreValue = 0;
-        for(let score in this.offerList){       //Para cada score
-            if(this.offerList[score].status == OfferType.PURCHASE &&
-            this.offerList[score].score > maxScoreValue){
-                maxScore = score;
-                maxScoreValue = this.offerList[score].score;
+        let bestPrice = 0;
+        this.offerList.forEach((offerScore, os) => {
+            if(offerScore.score > bestPrice && offerScore.status === OfferType.PURCHASE){
+                bestPrice = offerScore.score;
             }
-        }
-        return (maxScoreValue > 0 ? maxScore : this.initialPurchasePrice.toFixed(2));
+        })
+        return (bestPrice === 0 ? this.initialPurchasePrice : bestPrice);
     }
 
     /**
-     * Retorna o melhor (menor) preço de venda do mercado, em string
+     * Retorna o valor do MENOR preço que o mercado está vendendo
      */
     public getBestSaleScore(){
-        let minScore = '';
-        let minScoreValue = Infinity;
-        for(let score in this.offerList){       //Para cada score
-            if(this.offerList[score].status == OfferType.SALE &&
-            this.offerList[score].score < minScoreValue){
-                minScore = score;
-                minScoreValue = this.offerList[score].score;
+        let bestPrice = Infinity;
+        this.offerList.forEach((offerScore, os) => {
+            if(offerScore.score < bestPrice && offerScore.status === OfferType.SALE){
+                bestPrice = offerScore.score;
             }
-        }
-        return (minScoreValue === Infinity ? this.initialSalePrice.toFixed(2) : minScore);
-    }
-
-    logPrices(){
-        console.log('Melhor compra: ' + this.getBestPurchaseScore());
-        console.log('Melhor venda: ' + this.getBestSaleScore());
+        })
+        return (bestPrice === Infinity ? this.initialSalePrice : bestPrice);
     }
 }

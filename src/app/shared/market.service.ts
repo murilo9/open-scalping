@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { Deal } from './Deal';
-import { OfferType } from './OfferType';
-import { Offer } from './Offer';
+import { Deal } from '../core/Deal';
+import { OfferType } from '../core/OfferType';
+import { Offer } from '../core/Offer';
+import { Market, OfferScore } from '../core/Market';
+import { NewGameForm } from '../core/NewGameForm';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MarketService {
 
-  private offerListSubject = new Subject<Object>();
+  public market: Market;
+  private offerListSubject = new Subject<Array<OfferScore>>();
   public offerListChanged$ = this.offerListSubject.asObservable();
   private dealListSubject = new Subject<Array<Deal>>();
   public dealListChanged$ = this.dealListSubject.asObservable();
@@ -19,7 +22,11 @@ export class MarketService {
   
   constructor() { }
 
-  public offerListHasChanged(offerList: Object){
+  public startMarket(form: NewGameForm){
+    this.market = new Market(this, form);
+  }
+
+  public offerListHasChanged(offerList: Array<OfferScore>){
     this.offerListSubject.next(offerList);    //Isto será emitido para os widgets
   }
 
@@ -28,15 +35,21 @@ export class MarketService {
   }
 
   public makeSaleOffer(playerId, price, quantity){
-    this.offerSubject.next(new Offer(
-      quantity, price+'', OfferType.SALE, playerId
-    ))
+    let offer = new Offer(quantity, price+'', OfferType.SALE, playerId);
+    this.market.makeOffer(offer);
   }
 
   public makePurchaseOffer(playerId, price, quantity){
-    this.offerSubject.next(new Offer(
-      quantity, price+'', OfferType.PURCHASE, playerId
-    ))
+    let offer = new Offer(quantity, price+'', OfferType.PURCHASE, playerId);
+    this.market.makeOffer(offer);
+  }
+
+  public getBestPurchaseScore(){
+    return this.market.getBestPurchaseScore();
+  }
+
+  public getBestSaleScore(){
+    return this.market.getBestSaleScore();
   }
 
 }

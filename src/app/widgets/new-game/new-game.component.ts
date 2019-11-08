@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
-import { GameService } from '../../core/game.service';
+import { GameService } from '../../shared/game.service';
 import { NewGameForm } from 'src/app/core/NewGameForm';
 
 @Component({
