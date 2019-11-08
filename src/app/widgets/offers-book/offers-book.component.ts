@@ -82,6 +82,5 @@ export class OffersBookComponent {
       this.saleOffersList.push(sortedOffer);
     })
     this.saleOffersList.reverse();
-    console.log(this.saleOffersList)
   }
 }
