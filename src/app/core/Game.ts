@@ -17,7 +17,7 @@ export class Game{
         
         this.players.push(new Player(this.lastplayerId, 'XPI', marketService));     //Usuário sempre será da XP
         //Insere os players:
-        /*var playersQty = parseInt(form.playersQty);
+        var playersQty = parseInt(form.playersQty);
         for(var i = 0; i < playersQty; i++){
             this.lastplayerId++;
             var label = this.botNames[Math.floor(Math.random()*5)];
@@ -32,6 +32,6 @@ export class Game{
         this.players.push(new BotPlayer(this.lastplayerId, 'Santander', 
         marketService, gameService, appComponent));
         //Após terminar de construir a lista de players, registra ele no gameService:
-        gameService.setPlayersList(this.players);*/
+        gameService.setPlayersList(this.players);
     }
 }
