@@ -32,7 +32,8 @@ export class BotPlayer extends Player{
 
     private makeRandomOffer(){
         let buyOrSell = Math.random() > 0.5 ? true : false;
-        let quantity = Math.floor(Math.random()*10);
+        let quantity = 1 + Math.floor(Math.random()*9);
+        console.log('bot fazendo compra na quantidade '+quantity)
         if(buyOrSell){      //Comprar
             let offerPrice = this.marketService.getBestPurchaseScore() - 
             Math.floor(-2 + Math.random()*12)*this.gameService.tickSize;
