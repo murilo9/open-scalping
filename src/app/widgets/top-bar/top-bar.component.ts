@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { GameService } from 'src/app/shared/game.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -8,12 +10,32 @@ import { Component, OnInit } from '@angular/core';
 export class TopBarComponent {
 
   clock: Date;
+  running: any;
+  paused: boolean;
 
-  constructor() {
+  constructor(private gameService: GameService) {
     this.clock = new Date();
-    setInterval(() => {
-      this.clock = new Date();
+    this.running = setInterval(() => {
+      this.runClock();
     }, 1000)
+    this.paused = false;
+  }
+
+  playPause(){
+    this.paused = !this.paused;
+    if(this.paused)
+      clearInterval(this.running);
+    else
+      this.running = setInterval(() => {
+        this.runClock();
+      }, 1000);
+      this.gameService.playPause(this.paused);  //Envia o evento pro game service
+  }
+
+  runClock(){
+    this.clock.setSeconds(this.clock.getSeconds()+1);
+    this.clock = new Date(this.clock.getTime());
+    this.gameService.updateClock(this.clock);
   }
 
 }

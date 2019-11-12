@@ -3,6 +3,7 @@ $onPrimaryColor: #e2e2e2;
 $backgroundColor: #121212;
 $shadowColor: #050505;
 $inputBackgroundColor: #080808;
+$redColor: hsl(0, 80%, 60%);
 
 .offers-book{
     display: inline-flex;
@@ -38,7 +39,7 @@ $inputBackgroundColor: #080808;
     }
     .sale{
         .offer .price{
-            color: hsl(0, 80%, 60%);
+            color: $redColor;
         }
     }
 }
