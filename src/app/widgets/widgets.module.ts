@@ -7,11 +7,12 @@ import { DealHistoryComponent } from './deal-history/deal-history.component';
 import { FormsModule } from '@angular/forms';
 import { BulletComponent } from './bullet/bullet.component';
 import { OffersBookComponent } from './offers-book/offers-book.component';
+import { SuperdomComponent } from './superdom/superdom.component';
 
 
 
 @NgModule({
-  declarations: [GameViewComponent, TopBarComponent, NewGameComponent, DealHistoryComponent, BulletComponent, OffersBookComponent],
+  declarations: [GameViewComponent, TopBarComponent, NewGameComponent, DealHistoryComponent, BulletComponent, OffersBookComponent, SuperdomComponent],
   imports: [
     CommonModule,
     FormsModule

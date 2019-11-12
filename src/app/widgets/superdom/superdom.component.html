@@ -1,0 +1,18 @@
+<div class="superdom">
+    <p class="title">Super DOM</p>
+    <div class="dom-list-titles">
+        <span class="purchase">Qtd</span>
+        <span class="score">Preço</span>
+        <span class="sell">Qtd</span>
+    </div>
+    <div class="dom-list">
+        <div class="offer-score" 
+        [class.purchase]="offerScore.status === 0" 
+        [class.sell]="offerScore.status === 1" 
+        *ngFor="let offerScore of offersList">
+            <span class="purchase price">{{offerScore.status === 0 ? offerScore.total : ''}}</span>
+            <span class="score price">{{offerScore.score | currency:' '}}</span>
+            <span class="sell price">{{offerScore.status === 1 ? offerScore.total : ''}}</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+$sufaceColor: #1f1f1f;
+$onPrimaryColor: #e2e2e2;
+$backgroundColor: #121212;
+$shadowColor: #050505;
+$inputBackgroundColor: #080808;
+
+.superdom{
+    display: inline-flex;
+    flex-direction: column;
+    background: $sufaceColor;
+    padding: 8px;
+    border-radius: 4px;
+    .title{
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 8px;
+    }
+    .dom-list{
+        display: flex;
+        flex-direction: column-reverse;
+        height: 340px;
+        overflow-y: auto;
+    }
+    .offer-score, .dom-list-titles{
+        span{
+            display: inline-block;
+            text-align: center;
+        }
+        .purchase{
+            width: 64px;
+            &.price{
+                background: hsl(221, 51%, 24%);
+            }
+        }
+        .sell{
+            width: 64px;
+            &.price{
+                background: hsl(0, 52%, 30%);
+            }
+        }
+        .score{
+            width: 92px;
+            border-right: 1px solid #444;
+            border-left: 1px solid #444;
+        }
+    }
+}
