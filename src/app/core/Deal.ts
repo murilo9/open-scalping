@@ -9,12 +9,12 @@ export class Deal{
     time: Date;
 
     constructor(quantity: number, score: number, type: OfferType, 
-    activePlayerId: number, passivePlayerId: number){
+    activePlayerId: number, passivePlayerId: number, time: Date){
         this.quantity = quantity;
         this.score = score;
         this.type = type;
         this.activePlayerId = activePlayerId;
         this.passivePlayerId = passivePlayerId;
-        this.time = new Date();
+        this.time = new Date(time.getTime());
     }
 }

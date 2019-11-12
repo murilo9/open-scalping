@@ -4,6 +4,7 @@ $backgroundColor: #121212;
 $shadowColor: #050505;
 $inputBackgroundColor: #080808;
 $inputBorderColor: #888;
+$redColor: hsl(0, 80%, 60%);
 
 .topbar{
     display: flex;
@@ -15,4 +16,10 @@ $inputBorderColor: #888;
     box-sizing: content-box;
     padding: 8px 8px;
     box-shadow: 0 1px 3px $shadowColor;
+    .paused{
+        color: $redColor;
+    }
+    .pause-play{
+        margin-left: 8px;
+    }
 }

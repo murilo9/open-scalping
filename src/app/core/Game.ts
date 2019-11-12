@@ -22,15 +22,15 @@ export class Game{
             this.lastplayerId++;
             var label = this.botNames[Math.floor(Math.random()*5)];
             this.players.push(new BotPlayer(this.lastplayerId, label, 
-            this.marketService, this.gameService, appComponent));
+            this.marketService, this.gameService));
         }
         //Insere os big players:
         this.players.push(new BotPlayer(this.lastplayerId, 'Itaú', 
-        marketService, gameService, appComponent));
+        marketService, gameService));
         this.players.push(new BotPlayer(this.lastplayerId, 'Bradesco',
-        marketService, gameService, appComponent));
+        marketService, gameService));
         this.players.push(new BotPlayer(this.lastplayerId, 'Santander', 
-        marketService, gameService, appComponent));
+        marketService, gameService));
         //Após terminar de construir a lista de players, registra ele no gameService:
         gameService.setPlayersList(this.players);
     }

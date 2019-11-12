@@ -8,12 +8,16 @@ import { Player } from '../core/Player';
 })
 export class GameService {
 
-  newGameSubject = new Subject<Object>();
+  private newGameSubject = new Subject<Object>();
   newGameCalled$ = this.newGameSubject.asObservable();
+  private pausedSubject = new Subject<boolean>();
+  paused$ = this.pausedSubject.asObservable();
   initialPurchasePrice: number;
   initialSalePrice: number;
   minimumOfferSize: number;
   tickSize: number;
+  paused: boolean = false;
+  clock: Date;
   playersIdList: Array<string>;   //Lista de labels dos jogadores onde os índices correspondem aos IDs
 
   constructor() {
@@ -41,5 +45,14 @@ export class GameService {
         label = playerLabel;
     })
     return label;
+  }
+
+  public playPause(paused: boolean){
+    this.paused = paused;
+    this.pausedSubject.next(paused);
+  }
+
+  public updateClock(clock: Date){
+    this.clock = new Date(clock.getTime());
   }
 }

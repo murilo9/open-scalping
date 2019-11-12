@@ -2,23 +2,28 @@ import { Player } from './Player';
 import { MarketService } from '../shared/market.service';
 import { GameService } from '../shared/game.service';
 import { AppComponent } from '../app.component';
+import { Subscription } from 'rxjs';
 
 export class BotPlayer extends Player{
 
     private riskLevel: number;
+    private mayAct: boolean;
     randomOffer: any;
     gameService: GameService;
     marketService: MarketService;
-    appComponent: AppComponent;
+    subscription1: Subscription;
 
     constructor(id: number, label: string, marketService: MarketService, 
-        gameService: GameService, appComponent: AppComponent){
+    gameService: GameService){
         super(id, label, marketService);
         this.human = false;
+        this.mayAct = true;
         this.randomOffer = setTimeout(() => { this.makeRandomOffer(); }, 5000 + Math.random()*50000);
         this.marketService = marketService;
         this.gameService = gameService;
-        this.appComponent = appComponent;
+        this.subscription1 = this.gameService.paused$.subscribe((paused) => {
+            this.mayAct = !paused;
+        });
         //Por enquanto o Bradesco sempre será o provedor da liquidez inicial:
         if(label === 'Bradesco'){       
             setTimeout(() => {
@@ -31,20 +36,21 @@ export class BotPlayer extends Player{
     }
 
     private makeRandomOffer(){
-        let buyOrSell = Math.random() > 0.5 ? true : false;
-        let quantity = 1 + Math.floor(Math.random()*9);
-        console.log('bot fazendo compra na quantidade '+quantity)
-        if(buyOrSell){      //Comprar
-            let offerPrice = this.marketService.getBestPurchaseScore() - 
-            Math.floor(-2 + Math.random()*12)*this.gameService.tickSize;
-            this.marketService.makePurchaseOffer(this.id, offerPrice, quantity);
+        if(this.mayAct){
+            let buyOrSell = Math.random() > 0.5 ? true : false;
+            let quantity = 1 + Math.floor(Math.random()*9);
+            if(buyOrSell){      //Comprar
+                let offerPrice = this.marketService.getBestPurchaseScore() - 
+                Math.floor(-2 + Math.random()*12)*this.gameService.tickSize;
+                this.marketService.makePurchaseOffer(this.id, offerPrice, quantity);
+            }
+            else{       //Vender
+                let offerPrice = this.marketService.getBestPurchaseScore() + 
+                Math.floor(-2 + Math.random()*12)*this.gameService.tickSize;
+                this.marketService.makeSaleOffer(this.id, offerPrice, quantity);
+            }
+            //Reseta a função:
+            this.randomOffer = setTimeout(() => { this.makeRandomOffer(); }, Math.random()*60000);
         }
-        else{       //Vender
-            let offerPrice = this.marketService.getBestPurchaseScore() + 
-            Math.floor(-2 + Math.random()*12)*this.gameService.tickSize;
-            this.marketService.makeSaleOffer(this.id, offerPrice, quantity);
-        }
-        //Reseta a função:
-        this.randomOffer = setTimeout(() => { this.makeRandomOffer(); }, Math.random()*60000);
     }
 }

@@ -6,6 +6,7 @@ import { OfferType } from '../core/OfferType';
 import { Offer } from '../core/Offer';
 import { Market, OfferScore } from '../core/Market';
 import { NewGameForm } from '../core/NewGameForm';
+import { GameService } from './game.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +21,10 @@ export class MarketService {
   public offerSubject = new Subject<Offer>();
   public offerSent$ = this.offerSubject.asObservable();
   
-  constructor() { }
+  constructor(private gameService: GameService) { }
 
   public startMarket(form: NewGameForm){
-    this.market = new Market(this, form);
+    this.market = new Market(this, this.gameService, form);
   }
 
   public offerListHasChanged(offerList: Array<OfferScore>){

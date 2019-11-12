@@ -4,5 +4,10 @@
     class="new-game-button">
         Nova Partida
     </a>
-    <div class="clock">{{clock | date:'HH:mm:ss'}}</div>
+    <div class="clock">
+        <span [class.paused]="paused">{{clock | date:'HH:mm:ss'}}</span>
+        <a href='#' onclick="event.preventDefault()" class="pause-play" (click)="playPause()">
+            <i class="icon" [class.pause]="!paused" [class.play]="paused"></i>
+        </a>
+    </div>
 </div>
