@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { GameService } from 'src/app/shared/game.service';
+import { MarketService } from 'src/app/shared/market.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -13,7 +12,7 @@ export class TopBarComponent {
   running: any;
   paused: boolean;
 
-  constructor(private gameService: GameService) {
+  constructor(private marketService: MarketService) {
     this.clock = new Date();
     this.running = setInterval(() => {
       this.runClock();
@@ -29,13 +28,13 @@ export class TopBarComponent {
       this.running = setInterval(() => {
         this.runClock();
       }, 1000);
-      this.gameService.playPause(this.paused);  //Envia o evento pro game service
+      this.marketService.playPause(this.paused);  //Envia o evento pro game service
   }
 
   runClock(){
     this.clock.setSeconds(this.clock.getSeconds()+1);
     this.clock = new Date(this.clock.getTime());
-    this.gameService.updateClock(this.clock);
+    this.marketService.updateClock(this.clock);
   }
 
 }

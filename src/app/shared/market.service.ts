@@ -6,7 +6,8 @@ import { OfferType } from '../core/OfferType';
 import { Offer } from '../core/Offer';
 import { Market, OfferScore } from '../core/Market';
 import { NewGameForm } from '../core/NewGameForm';
-import { GameService } from './game.service';
+import { Player } from '../core/Player';
+import { Game } from '../core/Game';
 
 @Injectable({
   providedIn: 'root'
@@ -14,17 +15,44 @@ import { GameService } from './game.service';
 export class MarketService {
 
   public market: Market;
+  private newGameSubject = new Subject();
+  public NewGameCalled$ = this.newGameSubject.asObservable();
   private offerListSubject = new Subject<Array<OfferScore>>();
   public offerListChanged$ = this.offerListSubject.asObservable();
   private dealListSubject = new Subject<Array<Deal>>();
   public dealListChanged$ = this.dealListSubject.asObservable();
   public offerSubject = new Subject<Offer>();
   public offerSent$ = this.offerSubject.asObservable();
+  public dealMadeSubject = new Subject<Deal>();
+  public dealMade$ = this.dealMadeSubject.asObservable();
+  private pausedSubject = new Subject<boolean>();
+  public paused$ = this.pausedSubject.asObservable();
+  initialPurchasePrice: number;
+  initialSalePrice: number;
+  minimumOfferSize: number;
+  tickSize: number;
+  lotPricePerScore: number;
+  paused: boolean;
+  clock: Date;
+  playersIdList: Array<string>;   //Lista de labels dos jogadores onde os índices correspondem aos IDs
+  game: Game;
   
-  constructor(private gameService: GameService) { }
+  constructor() { }
+
+  public callNewGame(form: NewGameForm){
+    this.startMarket(form);
+    this.playersIdList = [];
+    this.initialPurchasePrice = parseFloat(form.initialPurchasePrice);
+    this.initialSalePrice = parseFloat(form.initialSalePrice);
+    this.minimumOfferSize = parseInt(form.minimumOfferSize);
+    this.tickSize = parseFloat(form.tickSize);
+    this.lotPricePerScore = parseFloat(form.lotPricePerScore);
+    this.game = new Game(this, form);
+    this.newGameSubject.next();
+  }
 
   public startMarket(form: NewGameForm){
-    this.market = new Market(this, this.gameService, form);
+    this.market = new Market(this, form);
   }
 
   public offerListHasChanged(offerList: Array<OfferScore>){
@@ -53,4 +81,31 @@ export class MarketService {
     return this.market.getBestSaleScore();
   }
 
+  public dealMade(deal: Deal){
+    this.dealMadeSubject.next(deal);
+  }
+
+  public setPlayersList(playersList: Array<Player>){
+    playersList.forEach((player, p) => {
+      this.playersIdList.push(player.label);
+    })
+  }
+
+  public getPlayerLabel(id: number){
+    let label = '(null)';
+    this.playersIdList.forEach((playerLabel, p) => {
+      if(p == id)
+        label = playerLabel;
+    })
+    return label;
+  }
+
+  public playPause(paused: boolean){
+    this.paused = paused;
+    this.pausedSubject.next(paused);
+  }
+
+  public updateClock(clock: Date){
+    this.clock = new Date(clock.getTime());
+  }
 }

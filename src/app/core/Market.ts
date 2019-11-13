@@ -4,7 +4,6 @@ import { Deal } from './Deal';
 import { OfferType } from './OfferType';
 import { MarketService } from '../shared/market.service';
 import { NewGameForm } from './NewGameForm';
-import { GameService } from '../shared/game.service';
 
 /**
  * A forma que as ofertas aparecem no book de ofertas (ordenadas por score): um array de OfferScore
@@ -20,15 +19,17 @@ export class Market{
     
     offerList: Array<OfferScore>;     //Lista de ofertas por ordem de pontuação (score)
     dealList: Array<Deal>;      //Lista de negócios fechados ordenados por tempo
+    lotPricePerScore: number;
     tickSize: number;       //Variação mínima da pontuação
     minimumOfferSize: number;       //Quantidade mínima de lotes por oferta
     initialPurchasePrice: number;
     initialSalePrice: number;
 
-    constructor(private marketService: MarketService, private gameService: GameService, form: NewGameForm){
+    constructor(private marketService: MarketService, form: NewGameForm){
         this.dealList = [];
         this.offerList = [];
         this.tickSize = parseFloat(form.tickSize);
+        this.lotPricePerScore = parseFloat(form.lotPricePerScore);
         this.minimumOfferSize = parseInt(form.minimumOfferSize);
         this.initialPurchasePrice = parseFloat(form.initialPurchasePrice);
         this.initialSalePrice = parseFloat(form.initialSalePrice);
@@ -95,27 +96,33 @@ export class Market{
                         //Fecha o negócio:
                         this.offerList[bestPriceIndex].queue[0].quantity -= offer.quantity;
                         let deal = new Deal(offer.quantity, bestPrice, offer.type, offer.sendingPlayerId, 
-                        this.offerList[bestPriceIndex].queue[0].sendingPlayerId, this.gameService.clock);
+                        this.offerList[bestPriceIndex].queue[0].sendingPlayerId, this.marketService.clock);
                         offer.quantity = 0;
                         this.dealList.push(deal);
+                        //Envia os lotes negociados pros players envolvidos:
+                        this.marketService.dealMade(deal);
                     }
                     //Caso a oferta apregoada tenha sido totalmente consumida:
                     else if(dealResult === 0){      
                         //Fecha o negócio:
                         let deal = new Deal(offer.quantity, bestPrice, offer.type, offer.sendingPlayerId, 
-                        this.offerList[bestPriceIndex].queue[0].sendingPlayerId, this.gameService.clock);
+                        this.offerList[bestPriceIndex].queue[0].sendingPlayerId, this.marketService.clock);
                         offer.quantity = 0;
                         this.dealList.push(deal);
+                        //Envia os lotes negociados pros players envolvidos:
+                        this.marketService.dealMade(deal);
                         //Elimina a oferta apregoada da fila desta pontuação:
-                        this.offerList[bestPriceIndex].queue.splice(0, 1);   
+                        this.offerList[bestPriceIndex].queue.splice(0, 1);
                     }
                     else{   //Caso a oferta apregoada tenha sido totalmente consumida e ainda sobrar compra
                         //Fecha o negócio:
                         offer.quantity -= this.offerList[bestPriceIndex].queue[0].quantity;
                         let deal = new Deal(this.offerList[bestPriceIndex].queue[0].quantity, 
                         bestPrice, offer.type, offer.sendingPlayerId, 
-                        this.offerList[bestPriceIndex].queue[0].sendingPlayerId, this.gameService.clock);
+                        this.offerList[bestPriceIndex].queue[0].sendingPlayerId, this.marketService.clock);
                         this.dealList.push(deal);
+                        //Envia os lotes negociados pros players envolvidos:
+                        this.marketService.dealMade(deal);
                         //Elimina a oferta apregoada da fila desta pontuação:
                         this.offerList[bestPriceIndex].queue.splice(0, 1);
                     }
@@ -173,17 +180,21 @@ export class Market{
                         //Fecha o negócio:
                         this.offerList[bestPriceindex].queue[0].quantity -= offer.quantity;
                         let deal = new Deal(offer.quantity, bestPrice, offer.type, offer.sendingPlayerId, 
-                        this.offerList[bestPriceindex].queue[0].sendingPlayerId, this.gameService.clock);
+                        this.offerList[bestPriceindex].queue[0].sendingPlayerId, this.marketService.clock);
                         offer.quantity = 0;
                         this.dealList.push(deal);
+                        //Envia os lotes negociados pros players envolvidos:
+                        this.marketService.dealMade(deal);
                     }
                     //Caso a oferta apregoada tenha sido totalmente consumida:
                     else if(dealResult === 0){      
                         //Fecha o negócio:
                         let deal = new Deal(offer.quantity, bestPrice, offer.type, offer.sendingPlayerId, 
-                        this.offerList[bestPriceindex].queue[0].sendingPlayerId, this.gameService.clock);
+                        this.offerList[bestPriceindex].queue[0].sendingPlayerId, this.marketService.clock);
                         offer.quantity = 0;
                         this.dealList.push(deal);
+                        //Envia os lotes negociados pros players envolvidos:
+                        this.marketService.dealMade(deal);
                         //Elimina a oferta apregoada da fila desta pontuação:
                         this.offerList[bestPriceindex].queue.splice(0, 1);   
                     }
@@ -192,8 +203,10 @@ export class Market{
                         offer.quantity -= this.offerList[bestPriceindex].queue[0].quantity;
                         let deal = new Deal(this.offerList[bestPriceindex].queue[0].quantity, 
                         bestPrice, offer.type, offer.sendingPlayerId, 
-                        this.offerList[bestPriceindex].queue[0].sendingPlayerId, this.gameService.clock);
+                        this.offerList[bestPriceindex].queue[0].sendingPlayerId, this.marketService.clock);
                         this.dealList.push(deal);
+                        //Envia os lotes negociados pros players envolvidos:
+                        this.marketService.dealMade(deal);
                         //Elimina a oferta apregoada da fila desta pontuação:
                         this.offerList[bestPriceindex].queue.splice(0, 1);
                     }
@@ -301,5 +314,9 @@ export class Market{
             }
         })
         return (bestPrice === Infinity ? this.initialSalePrice : bestPrice);
+    }
+
+    public pushDealToPlayers(deal: Deal){
+
     }
 }

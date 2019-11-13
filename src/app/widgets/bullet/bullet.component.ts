@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GameService } from 'src/app/shared/game.service';
 import { MarketService } from 'src/app/shared/market.service';
 
 @Component({
@@ -16,13 +15,13 @@ export class BulletComponent implements OnInit {
   tick: number;   //Variação mínima de pontuação
   minimumOfferSize: number;
 
-  constructor(private gameService: GameService, private marketService: MarketService) { 
-    this.price = gameService.initialSalePrice;
-    this.priceString = gameService.initialSalePrice.toFixed(2);
-    this.quantity = gameService.minimumOfferSize;
-    this.quantityString = gameService.minimumOfferSize.toString();
-    this.tick = gameService.tickSize;
-    this.minimumOfferSize = gameService.minimumOfferSize;
+  constructor(private marketService: MarketService) { 
+    this.price = marketService.initialSalePrice;
+    this.priceString = marketService.initialSalePrice.toFixed(2);
+    this.quantity = marketService.minimumOfferSize;
+    this.quantityString = marketService.minimumOfferSize.toString();
+    this.tick = marketService.tickSize;
+    this.minimumOfferSize = marketService.minimumOfferSize;
   }
 
   ngOnInit() {

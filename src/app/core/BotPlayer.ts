@@ -1,7 +1,5 @@
 import { Player } from './Player';
 import { MarketService } from '../shared/market.service';
-import { GameService } from '../shared/game.service';
-import { AppComponent } from '../app.component';
 import { Subscription } from 'rxjs';
 
 export class BotPlayer extends Player{
@@ -9,19 +7,16 @@ export class BotPlayer extends Player{
     private riskLevel: number;
     private mayAct: boolean;
     randomOffer: any;
-    gameService: GameService;
     marketService: MarketService;
     subscription1: Subscription;
 
-    constructor(id: number, label: string, marketService: MarketService, 
-    gameService: GameService){
+    constructor(id: number, label: string, marketService: MarketService){
         super(id, label, marketService);
         this.human = false;
         this.mayAct = true;
         this.randomOffer = setTimeout(() => { this.makeRandomOffer(); }, 5000 + Math.random()*50000);
         this.marketService = marketService;
-        this.gameService = gameService;
-        this.subscription1 = this.gameService.paused$.subscribe((paused) => {
+        this.subscription1 = this.marketService.paused$.subscribe((paused) => {
             this.mayAct = !paused;
         });
         //Por enquanto o Bradesco sempre será o provedor da liquidez inicial:
@@ -41,12 +36,12 @@ export class BotPlayer extends Player{
             let quantity = 1 + Math.floor(Math.random()*9);
             if(buyOrSell){      //Comprar
                 let offerPrice = this.marketService.getBestPurchaseScore() - 
-                Math.floor(-2 + Math.random()*12)*this.gameService.tickSize;
+                Math.floor(-2 + Math.random()*12)*this.marketService.tickSize;
                 this.marketService.makePurchaseOffer(this.id, offerPrice, quantity);
             }
             else{       //Vender
                 let offerPrice = this.marketService.getBestPurchaseScore() + 
-                Math.floor(-2 + Math.random()*12)*this.gameService.tickSize;
+                Math.floor(-2 + Math.random()*12)*this.marketService.tickSize;
                 this.marketService.makeSaleOffer(this.id, offerPrice, quantity);
             }
             //Reseta a função:

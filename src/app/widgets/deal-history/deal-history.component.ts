@@ -3,7 +3,6 @@ import { Subscription } from 'rxjs';
 
 import { MarketService } from '../../shared/market.service';
 import { Deal } from 'src/app/core/Deal';
-import { GameService } from 'src/app/shared/game.service';
 
 @Component({
   selector: 'app-deal-history',
@@ -15,7 +14,7 @@ export class DealHistoryComponent {
   subscription1: Subscription;
   dealList: Array<Deal> = [];
 
-  constructor(private marketService: MarketService, private gameService: GameService) {
+  constructor(private marketService: MarketService) {
     //Quando ocorrer um negócio fechado:
     this.subscription1 = marketService.dealListChanged$.subscribe((dealList) => {
       this.dealList = dealList;   //Atualiza o histórico de negócios neste component
@@ -23,7 +22,7 @@ export class DealHistoryComponent {
   }
 
   getPlayerLabel(id){
-    return this.gameService.getPlayerLabel(id);
+    return this.marketService.getPlayerLabel(id);
   }
 
 }
