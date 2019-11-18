@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MarketService } from 'src/app/shared/market.service';
 
 @Component({
@@ -36,5 +36,29 @@ export class TopBarComponent {
     this.clock = new Date(this.clock.getTime());
     this.marketService.updateClock(this.clock);
   }
+
+  getPlayerStatus(){
+    let status = 'ZERADO';
+    if(this.marketService.game){
+      let playerStatus = this.marketService.game.players[0].status;
+      if(playerStatus > 0)
+        status = 'COMPRADO';
+      else if(playerStatus < 0)
+        status = 'VENDIDO';
+    }
+    return status;
+  }
+
+  getPlayerBalance(){
+    let balance = 0;
+    if(this.marketService.game){
+      return this.marketService.game.players[0].balance;
+    }
+  }
+
+  //Somente para fins de debug
+  /*getPlayerAverage(){
+    return this.marketService.game.players[0].average;
+  }*/
 
 }

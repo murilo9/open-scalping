@@ -20,14 +20,14 @@ export class BotPlayer extends Player{
             this.mayAct = !paused;
         });
         //Por enquanto o Bradesco sempre será o provedor da liquidez inicial:
-        if(label === 'Bradesco'){       
+        /*if(label === 'Bradesco'){       
             setTimeout(() => {
                 let purchasePrice = this.marketService.getBestPurchaseScore();
                 let salePrice = this.marketService.getBestSaleScore();
                 this.marketService.makePurchaseOffer(this.id, purchasePrice, 10);
                 this.marketService.makeSaleOffer(this.id, salePrice, 10);
             }, 10)
-        }
+        }*/
     }
 
     private makeRandomOffer(){

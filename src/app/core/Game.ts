@@ -4,16 +4,15 @@ import { MarketService } from '../shared/market.service';
 import { NewGameForm } from './NewGameForm';
 
 export class Game{
-    //market: Market;
     players: Array<Player> = [];
-    lastplayerId = 1;
+    lastplayerId = 0;
     botNames: Array<string> = [
         'XPI', 'UBS', 'Clear', 'BTG', 'Rico', 'Turett'
     ]
 
     constructor(private marketService: MarketService, form: NewGameForm){
-        
-        this.players.push(new Player(this.lastplayerId, 'XPI', marketService));     //Usuário sempre será da XP
+        //Usuário sempre será da XP:
+        this.players.push(new Player(this.lastplayerId, 'XPI', marketService));     
         //Insere os players:
         var playersQty = parseInt(form.playersQty);
         for(var i = 0; i < playersQty; i++){

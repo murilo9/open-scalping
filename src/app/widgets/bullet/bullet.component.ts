@@ -8,7 +8,8 @@ import { MarketService } from 'src/app/shared/market.service';
 })
 export class BulletComponent implements OnInit {
 
-  priceString: String;    //Quantidade em string
+  playerId: string;
+  priceString: string;    //Quantidade em string
   quantityString: string;   //Preço em string, formatado com 2 casas decimais
   price: number = 0;    //Preço real, numérico
   quantity: number = 0;    //Quantidde real, numérico
@@ -22,6 +23,7 @@ export class BulletComponent implements OnInit {
     this.quantityString = marketService.minimumOfferSize.toString();
     this.tick = marketService.tickSize;
     this.minimumOfferSize = marketService.minimumOfferSize;
+    this.playerId = '0';
   }
 
   ngOnInit() {
@@ -44,11 +46,11 @@ export class BulletComponent implements OnInit {
   }
 
   sell(){
-    this.marketService.makeSaleOffer(0, this.price, this.quantity);
+    this.marketService.makeSaleOffer(parseInt(this.playerId), this.price, this.quantity);
   }
 
   buy(){
-    this.marketService.makePurchaseOffer(0, this.price, this.quantity);
+    this.marketService.makePurchaseOffer(parseInt(this.playerId), this.price, this.quantity);
   }
 
   priceIncrease(){
