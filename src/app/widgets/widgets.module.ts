@@ -8,11 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { BulletComponent } from './bullet/bullet.component';
 import { OffersBookComponent } from './offers-book/offers-book.component';
 import { SuperdomComponent } from './superdom/superdom.component';
+import { PersonalHistoryComponent } from './personal-history/personal-history.component';
 
 
 
 @NgModule({
-  declarations: [GameViewComponent, TopBarComponent, NewGameComponent, DealHistoryComponent, BulletComponent, OffersBookComponent, SuperdomComponent],
+  declarations: [GameViewComponent, TopBarComponent, NewGameComponent, DealHistoryComponent, BulletComponent, OffersBookComponent, SuperdomComponent, PersonalHistoryComponent],
   imports: [
     CommonModule,
     FormsModule

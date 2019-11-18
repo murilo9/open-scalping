@@ -4,6 +4,7 @@ $backgroundColor: #121212;
 $shadowColor: #050505;
 $inputBackgroundColor: #080808;
 $inputBorderColor: #888;
+$redColor: hsl(0, 80%, 60%);
 
 .deal-history{
     display: inline-flex;
@@ -32,7 +33,7 @@ $inputBorderColor: #888;
             color: green;
         }
         &.activeBought{
-            color: hsl(0, 80%, 60%);
+            color: $redColor;
         }
         .field, .subtitle>.field{
             display: inline-block;

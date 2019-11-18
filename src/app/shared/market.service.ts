@@ -27,6 +27,8 @@ export class MarketService {
   public dealMade$ = this.dealMadeSubject.asObservable();
   private pausedSubject = new Subject<boolean>();
   public paused$ = this.pausedSubject.asObservable();
+  private playerMadeOfferSubject = new Subject<{offer: Offer, preResult: string}>();
+  public playerMadeOffer$ = this.playerMadeOfferSubject.asObservable();
   initialPurchasePrice: number;
   initialSalePrice: number;
   minimumOfferSize: number;
@@ -65,12 +67,18 @@ export class MarketService {
 
   public makeSaleOffer(playerId, price, quantity){
     let offer = new Offer(quantity, price+'', OfferType.SALE, playerId);
-    this.market.makeOffer(offer);
+    let result = this.market.makeOffer(offer);
+    //Se a oferta foi feita pelo jogador, emite o evento:
+    if(playerId === 0)
+      this.playerMadeOfferSubject.next({offer: offer, preResult: result});
   }
 
   public makePurchaseOffer(playerId, price, quantity){
     let offer = new Offer(quantity, price+'', OfferType.PURCHASE, playerId);
-    this.market.makeOffer(offer);
+    let result = this.market.makeOffer(offer);
+    //Se a oferta foi feita pelo jogador, emite o evento:
+    if (playerId === 0)
+      this.playerMadeOfferSubject.next({ offer: offer, preResult: result });
   }
 
   public getBestPurchaseScore(){
