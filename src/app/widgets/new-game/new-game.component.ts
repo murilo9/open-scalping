@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
-import { GameService } from '../../shared/game.service';
 import { NewGameForm } from 'src/app/core/NewGameForm';
+import { MarketService } from 'src/app/shared/market.service';
 
 @Component({
   selector: 'app-new-game',
@@ -16,15 +16,17 @@ export class NewGameComponent {
     playersQty: '30',
     initialPurchasePrice: '65370.00',
     initialSalePrice: '65370.50',
+    lotPricePerScore: '1',
     tickSize: '0.5',
     minimumOfferSize: '1',
   };
 
-  constructor(private gameService: GameService) { }
+  constructor(private marketService: MarketService) { }
 
   newGame(){
     let playersQty = parseInt(this.form.playersQty);
     let tickSize = parseFloat(this.form.tickSize);
+    let lotPricePerScore = parseFloat(this.form.lotPricePerScore);
     let minimumOfferSize = parseFloat(this.form.minimumOfferSize);
     let initialSalePrice = parseFloat(this.form.initialSalePrice);
     let initialPurchasePrice = parseFloat(this.form.initialPurchasePrice);
@@ -32,12 +34,12 @@ export class NewGameComponent {
     if( playersQty > 30)
       this.form.playersQty = '30';
     if(isNaN(tickSize) || isNaN(playersQty) || isNaN(minimumOfferSize) ||
-      isNaN(initialPurchasePrice) || isNaN(initialSalePrice)){
+      isNaN(initialPurchasePrice) || isNaN(initialSalePrice) || isNaN(lotPricePerScore)){
       alert('Preencha o fomrulário com valores numéricos.');
       return false;
     }
     if((initialSalePrice - initialPurchasePrice) === tickSize){
-      this.gameService.callNewGame(this.form);
+      this.marketService.callNewGame(this.form);
     }
     else{
       alert('A diferença entre os preços iniciais de compra e venda deve ser de 1 tick.');

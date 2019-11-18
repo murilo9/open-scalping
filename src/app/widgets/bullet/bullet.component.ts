@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GameService } from 'src/app/shared/game.service';
 import { MarketService } from 'src/app/shared/market.service';
 
 @Component({
@@ -9,20 +8,22 @@ import { MarketService } from 'src/app/shared/market.service';
 })
 export class BulletComponent implements OnInit {
 
-  priceString: String;    //Quantidade em string
+  playerId: string;
+  priceString: string;    //Quantidade em string
   quantityString: string;   //Preço em string, formatado com 2 casas decimais
   price: number = 0;    //Preço real, numérico
   quantity: number = 0;    //Quantidde real, numérico
   tick: number;   //Variação mínima de pontuação
   minimumOfferSize: number;
 
-  constructor(private gameService: GameService, private marketService: MarketService) { 
-    this.price = gameService.initialSalePrice;
-    this.priceString = gameService.initialSalePrice.toFixed(2);
-    this.quantity = gameService.minimumOfferSize;
-    this.quantityString = gameService.minimumOfferSize.toString();
-    this.tick = gameService.tickSize;
-    this.minimumOfferSize = gameService.minimumOfferSize;
+  constructor(private marketService: MarketService) { 
+    this.price = marketService.initialSalePrice;
+    this.priceString = marketService.initialSalePrice.toFixed(2);
+    this.quantity = marketService.minimumOfferSize;
+    this.quantityString = marketService.minimumOfferSize.toString();
+    this.tick = marketService.tickSize;
+    this.minimumOfferSize = marketService.minimumOfferSize;
+    this.playerId = '0';
   }
 
   ngOnInit() {
@@ -45,11 +46,11 @@ export class BulletComponent implements OnInit {
   }
 
   sell(){
-    this.marketService.makeSaleOffer(0, this.price, this.quantity);
+    this.marketService.makeSaleOffer(parseInt(this.playerId), this.price, this.quantity);
   }
 
   buy(){
-    this.marketService.makePurchaseOffer(0, this.price, this.quantity);
+    this.marketService.makePurchaseOffer(parseInt(this.playerId), this.price, this.quantity);
   }
 
   priceIncrease(){

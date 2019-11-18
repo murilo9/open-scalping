@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { GameService } from 'src/app/shared/game.service';
+import { Component } from '@angular/core';
+import { MarketService } from 'src/app/shared/market.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -13,7 +12,7 @@ export class TopBarComponent {
   running: any;
   paused: boolean;
 
-  constructor(private gameService: GameService) {
+  constructor(private marketService: MarketService) {
     this.clock = new Date();
     this.running = setInterval(() => {
       this.runClock();
@@ -29,13 +28,37 @@ export class TopBarComponent {
       this.running = setInterval(() => {
         this.runClock();
       }, 1000);
-      this.gameService.playPause(this.paused);  //Envia o evento pro game service
+      this.marketService.playPause(this.paused);  //Envia o evento pro game service
   }
 
   runClock(){
     this.clock.setSeconds(this.clock.getSeconds()+1);
     this.clock = new Date(this.clock.getTime());
-    this.gameService.updateClock(this.clock);
+    this.marketService.updateClock(this.clock);
   }
+
+  getPlayerStatus(){
+    let status = 'ZERADO';
+    if(this.marketService.game){
+      let playerStatus = this.marketService.game.players[0].status;
+      if(playerStatus > 0)
+        status = 'COMPRADO';
+      else if(playerStatus < 0)
+        status = 'VENDIDO';
+    }
+    return status;
+  }
+
+  getPlayerBalance(){
+    let balance = 0;
+    if(this.marketService.game){
+      return this.marketService.game.players[0].balance;
+    }
+  }
+
+  //Somente para fins de debug
+  /*getPlayerAverage(){
+    return this.marketService.game.players[0].average;
+  }*/
 
 }

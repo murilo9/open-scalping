@@ -22,6 +22,11 @@
             (change)="parseValues()" name="tickSize">
         </div>
         <div class="field">
+            <label>Preço do lote por ponto:</label>
+            <input type="text" [(ngModel)]="form.lotPricePerScore" 
+            (change)="parseValues()" name="lotPricePerScore">
+        </div>
+        <div class="field">
             <label>Lote mínimo:</label>
             <input type="text" [(ngModel)]="form.minimumOfferSize" 
             (change)="parseValues()" name="minimumOfferSize">
