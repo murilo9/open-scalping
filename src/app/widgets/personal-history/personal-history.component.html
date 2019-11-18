@@ -1,0 +1,22 @@
+<div class="personal-history">
+  <p class="title">Histórico Pessoal</p>
+  <div class="offer-list">
+    <p class="offer">
+      <span class="score">Preço</span>
+      <span class="quantity">Qtd</span>
+      <span class="status">Situação</span>
+      <span class="time">Hora</span>
+    </p>
+    <div class="offer-list-wrapper">
+      <p class="offer" 
+      [class.sale]="offer.type === 0" 
+      [class.purchase]="offer.type === 1"
+      *ngFor="let offer of playerOfferList">
+        <span class="score">{{offer.score}}</span>
+        <span class="quantity">{{offer.initialQuantity}}</span>
+        <span class="status">{{getOfferStatusLabel(offer.status)}}</span>
+        <span class="time">{{offer.time | date:'HH:mm:ss'}}</span>
+      </p>
+    </div>
+  </div>
+</div>

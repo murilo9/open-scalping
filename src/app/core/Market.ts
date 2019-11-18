@@ -67,6 +67,7 @@ export class Market{
     }
 
     public makeOffer(offer: Offer){
+        let result = 'teased';
         //--------------------- Se for uma oferta de COMPRA ---------------------
         if(offer.type === OfferType.PURCHASE){
 
@@ -88,7 +89,8 @@ export class Market{
             
             const bestPrice = this.getBestSaleScore();
             let bestPriceIndex = this.getScoreIndex(bestPrice);
-            //Caso a oferta esteja acima ou igual o melhor preço de venda e este preço tenha ofertas apregoadas:
+            /*Caso a oferta esteja acima ou igual o melhor preço de venda 
+            e este preço tenha ofertas apregoadas: */
             if(offer.score >= bestPrice && this.offerList[bestPriceIndex].status === OfferType.SALE){
                 do {    //Fecha os negócios no melhor preço:
                     let dealResult = this.offerList[bestPriceIndex].queue[0].quantity - offer.quantity;
@@ -101,6 +103,7 @@ export class Market{
                         this.dealList.push(deal);
                         //Envia os lotes negociados pros players envolvidos:
                         this.marketService.dealMade(deal);
+                        result = 'completed';
                     }
                     //Caso a oferta apregoada tenha sido totalmente consumida:
                     else if(dealResult === 0){      
@@ -113,8 +116,10 @@ export class Market{
                         this.marketService.dealMade(deal);
                         //Elimina a oferta apregoada da fila desta pontuação:
                         this.offerList[bestPriceIndex].queue.splice(0, 1);
+                        result = 'completed';
                     }
-                    else{   //Caso a oferta apregoada tenha sido totalmente consumida e ainda sobrar compra
+                    else{   /*Caso a oferta apregoada tenha sido totalmente 
+                        consumida e ainda sobrar compra*/
                         //Fecha o negócio:
                         offer.quantity -= this.offerList[bestPriceIndex].queue[0].quantity;
                         let deal = new Deal(this.offerList[bestPriceIndex].queue[0].quantity, 
@@ -125,6 +130,7 @@ export class Market{
                         this.marketService.dealMade(deal);
                         //Elimina a oferta apregoada da fila desta pontuação:
                         this.offerList[bestPriceIndex].queue.splice(0, 1);
+                        result = 'parcial';
                     }
                     //Finalmente, recalcula o total de ofertas nesta pontuação:
                     this.rebuildScoreTotal(bestPrice);
@@ -185,6 +191,7 @@ export class Market{
                         this.dealList.push(deal);
                         //Envia os lotes negociados pros players envolvidos:
                         this.marketService.dealMade(deal);
+                        result = 'completed';
                     }
                     //Caso a oferta apregoada tenha sido totalmente consumida:
                     else if(dealResult === 0){      
@@ -197,6 +204,7 @@ export class Market{
                         this.marketService.dealMade(deal);
                         //Elimina a oferta apregoada da fila desta pontuação:
                         this.offerList[bestPriceindex].queue.splice(0, 1);   
+                        result = 'completed';
                     }
                     else{   //Caso a oferta apregoada tenha sido totalmente consumida e ainda sobrar compra
                         //Fecha o negócio:
@@ -209,6 +217,7 @@ export class Market{
                         this.marketService.dealMade(deal);
                         //Elimina a oferta apregoada da fila desta pontuação:
                         this.offerList[bestPriceindex].queue.splice(0, 1);
+                        result = 'parcial';
                     }
                     //Finalmente, recalcula o total de ofertas nesta pontuação:
                     this.rebuildScoreTotal(bestPrice);
@@ -239,6 +248,8 @@ export class Market{
 
         //Por último, emite o evento de atualizar a lista de ofertas:
         this.marketService.offerListHasChanged(this.offerList);
+
+        return result;      //Retorna o pré-resultado da ordem
     }
 
     private scoreExists(score: number){

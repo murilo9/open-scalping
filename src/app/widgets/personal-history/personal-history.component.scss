@@ -1,0 +1,51 @@
+$sufaceColor: #1f1f1f;
+$onPrimaryColor: #e2e2e2;
+$backgroundColor: #121212;
+$shadowColor: #050505;
+$inputBackgroundColor: #080808;
+$inputBorderColor: #888;
+$redColor: hsl(0, 80%, 60%);
+
+.personal-history{
+  display: inline-flex;
+  background: $sufaceColor;
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px $shadowColor;
+  display: flex;
+  flex-direction: column;
+  .title{
+    text-align: center;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  .offer-list{
+    .offer-list-wrapper{
+      display: flex;
+      flex-direction: column;
+    }
+    .offer{
+      &.sale{
+        color: green;
+      }
+      &.purchase{
+        color: $redColor;
+      }
+      span{
+        display: inline-block;
+      }
+      .score{
+        width: 78px;
+      }
+      .quantity{
+        width: 48px;
+      }
+      .status{
+        width: 96px;
+      }
+      .time{
+        width: 64px;
+      }
+    }
+  }
+}

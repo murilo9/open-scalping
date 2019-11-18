@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MarketService } from 'src/app/shared/market.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { MarketService } from 'src/app/shared/market.service';
   templateUrl: './bullet.component.html',
   styleUrls: ['./bullet.component.scss']
 })
-export class BulletComponent implements OnInit {
+export class BulletComponent {
 
   playerId: string;
   priceString: string;    //Quantidade em string
@@ -24,9 +24,6 @@ export class BulletComponent implements OnInit {
     this.tick = marketService.tickSize;
     this.minimumOfferSize = marketService.minimumOfferSize;
     this.playerId = '0';
-  }
-
-  ngOnInit() {
   }
 
   parsePrice(event: any){
