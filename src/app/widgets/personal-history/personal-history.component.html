@@ -12,7 +12,7 @@
       [class.sale]="offer.type === 0" 
       [class.purchase]="offer.type === 1"
       *ngFor="let offer of playerOfferList">
-        <span class="score">{{offer.score}}</span>
+        <span class="score">{{offer.score | currency:' '}}</span>
         <span class="quantity">{{offer.initialQuantity}}</span>
         <span class="status">{{getOfferStatusLabel(offer.status)}}</span>
         <span class="time">{{offer.time | date:'HH:mm:ss'}}</span>

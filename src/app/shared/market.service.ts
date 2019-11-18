@@ -67,18 +67,20 @@ export class MarketService {
 
   public makeSaleOffer(playerId, price, quantity){
     let offer = new Offer(quantity, price+'', OfferType.SALE, playerId);
-    let result = this.market.makeOffer(offer);
+    let result = this.market.makeOffer({...offer});
     //Se a oferta foi feita pelo jogador, emite o evento:
-    if(playerId === 0)
+    if(playerId === 0){
       this.playerMadeOfferSubject.next({offer: offer, preResult: result});
+    }
   }
 
   public makePurchaseOffer(playerId, price, quantity){
     let offer = new Offer(quantity, price+'', OfferType.PURCHASE, playerId);
-    let result = this.market.makeOffer(offer);
+    let result = this.market.makeOffer({...offer});
     //Se a oferta foi feita pelo jogador, emite o evento:
-    if (playerId === 0)
+    if (playerId === 0){
       this.playerMadeOfferSubject.next({ offer: offer, preResult: result });
+    }
   }
 
   public getBestPurchaseScore(){
