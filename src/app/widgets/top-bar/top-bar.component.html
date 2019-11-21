@@ -4,7 +4,7 @@
     class="new-game-button">
         Nova Partida
     </a>
-    <div class="status">
+    <div class="status" *ngIf="gameStarted">
         Situação: 
         <span class="status">
             {{getPlayerStatus()}}
@@ -18,7 +18,7 @@
             {{getPlayerAverage()}}
         </span>-->
     </div>
-    <div class="clock">
+    <div class="clock" *ngIf="gameStarted">
         <span [class.paused]="paused">{{clock | date:'HH:mm:ss'}}</span>
         <a href='#' onclick="event.preventDefault()" class="pause-play" (click)="playPause()">
             <i class="icon" [class.pause]="!paused" [class.play]="paused"></i>

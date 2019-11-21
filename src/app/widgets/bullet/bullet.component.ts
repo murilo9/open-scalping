@@ -46,8 +46,40 @@ export class BulletComponent {
     this.marketService.makeSaleOffer(parseInt(this.playerId), this.price, this.quantity);
   }
 
+  teaseSellTop(){
+    this.marketService.makeSaleOffer(
+      parseInt(this.playerId), 
+      this.marketService.getBestSaleScore(), 
+      this.quantity
+    );
+  }
+
+  sellNow(){
+    this.marketService.makeSaleOffer(
+      parseInt(this.playerId),
+      this.marketService.getBestPurchaseScore(),
+      this.quantity
+    );
+  }
+
   buy(){
     this.marketService.makePurchaseOffer(parseInt(this.playerId), this.price, this.quantity);
+  }
+
+  teaseBuyTop(){
+    this.marketService.makePurchaseOffer(
+      parseInt(this.playerId),
+      this.marketService.getBestPurchaseScore(),
+      this.quantity
+    );
+  }
+
+  buyNow(){
+    this.marketService.makePurchaseOffer(
+      parseInt(this.playerId),
+      this.marketService.getBestSaleScore(),
+      this.quantity
+    );
   }
 
   priceIncrease(){
