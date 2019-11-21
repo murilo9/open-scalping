@@ -15,6 +15,7 @@ import { Game } from '../core/Game';
 export class MarketService {
 
   public market: Market;
+  private lastOfferId: number = 0;
   private newGameSubject = new Subject();
   public NewGameCalled$ = this.newGameSubject.asObservable();
   private offerListSubject = new Subject<Array<OfferScore>>();
@@ -66,7 +67,7 @@ export class MarketService {
   }
 
   public makeSaleOffer(playerId, price, quantity){
-    let offer = new Offer(quantity, price+'', OfferType.SALE, playerId);
+    let offer = new Offer(this.lastOfferId++, quantity, price+'', OfferType.SALE, playerId);
     let result = this.market.makeOffer({...offer});
     //Se a oferta foi feita pelo jogador, emite o evento:
     if(playerId === 0){
@@ -75,7 +76,7 @@ export class MarketService {
   }
 
   public makePurchaseOffer(playerId, price, quantity){
-    let offer = new Offer(quantity, price+'', OfferType.PURCHASE, playerId);
+    let offer = new Offer(this.lastOfferId++, quantity, price+'', OfferType.PURCHASE, playerId);
     let result = this.market.makeOffer({...offer});
     //Se a oferta foi feita pelo jogador, emite o evento:
     if (playerId === 0){
@@ -117,5 +118,9 @@ export class MarketService {
 
   public updateClock(clock: Date){
     this.clock = new Date(clock.getTime());
+  }
+
+  cancelOffer(id: number, score: number){
+    return this.market.cancelOffer(id, score);
   }
 }

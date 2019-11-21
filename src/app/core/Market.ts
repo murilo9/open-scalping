@@ -275,6 +275,9 @@ export class Market{
             total += offer.quantity;
         })
         this.offerList[index].total = total;
+        if(total === 0){
+            this.offerList[index].status = null;
+        }
     }
 
     /**
@@ -327,7 +330,23 @@ export class Market{
         return (bestPrice === Infinity ? this.initialSalePrice : bestPrice);
     }
 
-    public pushDealToPlayers(deal: Deal){
-
+    /**
+     * Cancela a oferta com o id e o score especificado
+     */
+    public cancelOffer(id, score){
+        let quantity = 0;
+        this.offerList.forEach((offerScore, os) => {
+            if(offerScore.score === score){
+                offerScore.queue.forEach((offer, o) => {
+                    if(offer.id === id){
+                        quantity = offer.quantity;
+                        this.offerList[os].queue.splice(o, 1);
+                        this.rebuildScoreTotal(score);
+                        this.marketService.offerListHasChanged(this.offerList);
+                    }
+                })
+            }
+        })
+        return quantity;
     }
 }

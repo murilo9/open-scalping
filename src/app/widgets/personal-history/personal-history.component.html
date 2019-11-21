@@ -6,6 +6,7 @@
       <span class="quantity">Qtd</span>
       <span class="status">Situação</span>
       <span class="time">Hora</span>
+      <span class="cancel"></span>
     </p>
     <div class="offer-list-wrapper">
       <p class="offer" 
@@ -16,6 +17,11 @@
         <span class="quantity">{{offer.initialQuantity}}</span>
         <span class="status">{{getOfferStatusLabel(offer.status)}}</span>
         <span class="time">{{offer.time | date:'HH:mm:ss'}}</span>
+        <span class="cancel">
+          <a href='' onclick="event.preventDefault()" (click)="cancelOffer(offer.id, offer.score)">
+            {{offer.status === 'completed' ? '' : 'Cancelar'}}
+          </a>
+        </span>
       </p>
     </div>
   </div>

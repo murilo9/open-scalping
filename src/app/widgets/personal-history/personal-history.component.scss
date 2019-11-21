@@ -25,10 +25,10 @@ $redColor: hsl(0, 80%, 60%);
       flex-direction: column;
     }
     .offer{
-      &.sale{
+      &.sale, &.sale a{
         color: green;
       }
-      &.purchase{
+      &.purchase, &.purchase a{
         color: $redColor;
       }
       span{

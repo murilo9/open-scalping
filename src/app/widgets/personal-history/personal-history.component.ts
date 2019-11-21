@@ -11,6 +11,7 @@ import { OfferType } from 'src/app/core/OfferType';
 export class PersonalHistoryComponent{
 
   playerOfferList: Array<{
+    id: number,
     quantity: number, 
     initialQuantity: number, 
     score: number, 
@@ -20,11 +21,14 @@ export class PersonalHistoryComponent{
   }> = [];
   subscription1: Subscription;
   subscription2: Subscription;
+  marketService: MarketService;
   
   constructor(marketService: MarketService) { 
+    this.marketService = marketService;
     //Caso o jogador tenha enviado uma oferta:
     this.subscription1 = marketService.playerMadeOffer$.subscribe((offer) => {
       this.playerOfferList.push({
+        id: offer.offer.id,
         quantity: offer.offer.quantity,
         initialQuantity: offer.offer.quantity,
         score: offer.offer.score,
@@ -33,8 +37,9 @@ export class PersonalHistoryComponent{
         time: new Date()
       })
     })
-    //Caso o jogador tenha batido a oferta do jogador:
+    //Caso alguém tenha batido a oferta do jogador:
     this.subscription2 = marketService.dealMade$.subscribe((deal) => {
+      console.log('jogador foi batido')
       if(deal.passivePlayerId === 0){
         if(deal.type === OfferType.PURCHASE){
           let stop = false;
@@ -110,6 +115,23 @@ export class PersonalHistoryComponent{
         break;
     }
     return label;
+  }
+
+  cancelOffer(id, score){
+    let offerQuantity = this.marketService.cancelOffer(id, score);
+    this.playerOfferList.forEach((offer, os) => {
+      if(offer.id === id){
+        //Se a oferta estiver apenas apregoada, elimina:
+        if(offer.status === 'teased'){
+          this.playerOfferList.splice(os, 1);
+        }
+        //Caso a oferta tenha sido realizada parcialmente, completa:
+        else if(offer.status === 'parcial'){
+          offer.initialQuantity = offer.initialQuantity - offerQuantity;
+          offer.status = 'completed';
+        }
+      }
+    })
   }
 
 }
