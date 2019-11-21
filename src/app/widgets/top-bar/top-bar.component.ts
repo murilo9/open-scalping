@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MarketService } from 'src/app/shared/market.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-top-bar',
@@ -11,6 +12,8 @@ export class TopBarComponent {
   clock: Date;
   running: any;
   paused: boolean;
+  gameStarted: boolean = false;
+  subsscription1: Subscription;
 
   constructor(private marketService: MarketService) {
     this.clock = new Date();
@@ -18,6 +21,9 @@ export class TopBarComponent {
       this.runClock();
     }, 1000)
     this.paused = false;
+    this.subsscription1 = this.marketService.NewGameCalled$.subscribe(() => {
+      this.gameStarted = true;
+    })
   }
 
   playPause(){
@@ -42,9 +48,9 @@ export class TopBarComponent {
     if(this.marketService.game){
       let playerStatus = this.marketService.game.players[0].status;
       if(playerStatus > 0)
-        status = 'COMPRADO';
+        status = 'COMPRADO (' + playerStatus + ')';
       else if(playerStatus < 0)
-        status = 'VENDIDO';
+        status = 'VENDIDO (' + playerStatus + ')';
     }
     return status;
   }

@@ -73,6 +73,9 @@ $inputBorderColor: #888;
                 &.sell{
                     background: #BF360C;
                 }
+                &.buy, &.sell{
+                    margin: 0 8px;
+                }
             }
         }
     }
