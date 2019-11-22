@@ -56,12 +56,9 @@ export class Player{
     receiveLot(lot: Lot){
         if(lot.type === OfferType.PURCHASE){
             if(this.id === 0)
-                console.log('player recebendo lote do tipo PURCHASE')
             this.purchasedLots.push(lot);    //Insere o lote na lista de lotes
             //Em caso de compra com o player vendido, atualiza o balanço:
             if (this.status < 0) {
-                if (this.id === 0)
-                    console.log('player estava vendido e comprou')
                 let dealResultBalance = this.average - lot.score;   //Calcula o lucro/prejuízo
                 //Aplica o lucro/prejuízo:
                 this.balance += dealResultBalance * this.marketService.lotPricePerScore;      
@@ -70,12 +67,9 @@ export class Player{
         }
         else if(lot.type === OfferType.SALE){
             if (this.id === 0)
-                console.log('player recebendo lote do tipo SALE')
             this.soldLots.push(lot);    //Insere o lote na lista de lotes
             //Em caso de venda com o player comprado, atualiza o balanço:
             if (this.status > 0) {
-                if (this.id === 0)
-                    console.log('player estava comprado e vendeu')
                 let dealResultBalance = lot.score - this.average;   //Calcula o lucro/prejuízo
                 //Aplica o lucro/prejuízo:
                 this.balance += dealResultBalance * this.marketService.lotPricePerScore;      

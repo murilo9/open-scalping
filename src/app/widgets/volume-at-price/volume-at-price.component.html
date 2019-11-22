@@ -1,0 +1,12 @@
+<div class="volume-at-price">
+  <p class="title">Volume de Mercado</p>
+  <div class="volume-list">
+    <p class="volume-item" *ngFor="let volume of volumesList">
+      <span class="score">{{volume.score | currency:' '}}</span>
+      <span class="totals">
+        <span class="purchase" [ngStyle]="{'width': getWidth(volume.purchaseTotal)+'%'}"></span>
+        <span class="sell" [ngStyle]="{'width': getWidth(volume.sellTotal)+'%'}"></span>
+      </span>
+    </p>
+  </div>
+</div>

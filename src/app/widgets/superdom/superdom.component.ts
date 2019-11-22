@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { OfferScore } from 'src/app/core/Market';
 import { MarketService } from 'src/app/shared/market.service';

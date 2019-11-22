@@ -8,6 +8,7 @@ $inputBorderColor: #888;
 .game-view{
     padding: 8px 0;
     display: flex;
+    justify-content: space-evenly;
     .col-1{
         display: inline-flex;
         height: 100%;
@@ -21,6 +22,7 @@ $inputBorderColor: #888;
     .col-3{
         display: inline-flex;
         height: 100%;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 }
