@@ -64,6 +64,10 @@ export class Market{
                 queue: []
             });
         }
+        //Gambiarra pro super DOM ser inicializado no início da partida:
+        setTimeout(() => {
+            marketService.offerListHasChanged(this.offerList);
+        }, 10)
     }
 
     public makeOffer(offer: Offer){

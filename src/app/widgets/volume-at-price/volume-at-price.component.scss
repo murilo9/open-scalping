@@ -1,0 +1,53 @@
+$sufaceColor: #1f1f1f;
+$onPrimaryColor: #e2e2e2;
+$backgroundColor: #121212;
+$shadowColor: #050505;
+$inputBackgroundColor: #080808;
+$inputBorderColor: #888;
+$redColor: hsl(0, 80%, 60%);
+
+.volume-at-price{
+  display: inline-flex;
+  background: $sufaceColor;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px $shadowColor;
+  flex-direction: column;
+  .title{
+    text-align: center;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  .volume-list{
+    height: 280px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    .volume-item{
+      .score{
+        padding-left: 8px;
+      }
+      span{
+        display: inline-block;
+      }
+      .totals{
+        width: 128px;
+        margin-left: 8px;
+        margin-right: 8px;
+        padding-left: 8px;
+        border-left: 1px solid #444;
+        .sell{
+          background: $redColor;
+        }
+        .purchase{
+          background: green;
+        }
+        .sell, .purchase{
+          height: 16px;
+        }
+      }
+      
+    }
+  }
+}

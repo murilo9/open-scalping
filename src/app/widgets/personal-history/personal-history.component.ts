@@ -39,7 +39,6 @@ export class PersonalHistoryComponent{
     })
     //Caso alguém tenha batido a oferta do jogador:
     this.subscription2 = marketService.dealMade$.subscribe((deal) => {
-      console.log('jogador foi batido')
       if(deal.passivePlayerId === 0){
         if(deal.type === OfferType.PURCHASE){
           let stop = false;

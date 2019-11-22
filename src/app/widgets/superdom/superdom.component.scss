@@ -9,7 +9,10 @@ $inputBackgroundColor: #080808;
     flex-direction: column;
     background: $sufaceColor;
     padding: 8px;
+    margin-bottom: 8px;
+    margin-right: 8px;
     border-radius: 4px;
+    box-shadow: 0 1px 3px $shadowColor;
     .title{
         font-weight: bold;
         text-align: center;
@@ -18,7 +21,7 @@ $inputBackgroundColor: #080808;
     .dom-list{
         display: flex;
         flex-direction: column-reverse;
-        height: 340px;
+        height: 260px;
         overflow-y: auto;
     }
     .offer-score, .dom-list-titles{
@@ -39,7 +42,9 @@ $inputBackgroundColor: #080808;
             }
         }
         .score{
-            width: 92px;
+            width: 96px;
+            padding-left: 8px;
+            padding-right: 8px;
             border-right: 1px solid #444;
             border-left: 1px solid #444;
         }

@@ -9,11 +9,12 @@ import { BulletComponent } from './bullet/bullet.component';
 import { OffersBookComponent } from './offers-book/offers-book.component';
 import { SuperdomComponent } from './superdom/superdom.component';
 import { PersonalHistoryComponent } from './personal-history/personal-history.component';
+import { VolumeAtPriceComponent } from './volume-at-price/volume-at-price.component';
 
 
 
 @NgModule({
-  declarations: [GameViewComponent, TopBarComponent, NewGameComponent, DealHistoryComponent, BulletComponent, OffersBookComponent, SuperdomComponent, PersonalHistoryComponent],
+  declarations: [GameViewComponent, TopBarComponent, NewGameComponent, DealHistoryComponent, BulletComponent, OffersBookComponent, SuperdomComponent, PersonalHistoryComponent, VolumeAtPriceComponent],
   imports: [
     CommonModule,
     FormsModule

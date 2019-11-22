@@ -32,7 +32,7 @@ export class BotPlayer extends Player{
 
     private makeRandomOffer(){
         if(this.mayAct){
-            let buyOrSell = Math.random() > 0.5 ? true : false;
+            let buyOrSell = Math.random() > 0.49 ? true : false;
             let quantity = 1 + Math.floor(Math.random()*9);
             if(buyOrSell){      //Comprar
                 let offerPrice = this.marketService.getBestPurchaseScore() - 

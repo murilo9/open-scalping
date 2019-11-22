@@ -8,7 +8,7 @@ $inputBorderColor: #888;
 .bullet{
     display: inline-block;
     background: $sufaceColor;
-    padding: 16px;
+    padding: 8px;
     border-radius: 4px;
     box-shadow: 0 1px 3px $shadowColor;
     margin-bottom: 8px;
@@ -47,6 +47,7 @@ $inputBorderColor: #888;
                     color: $onPrimaryColor;
                     text-align: center;
                     width: 72px;
+                    height: 20px;
                     &:first-child{
                         margin-right: 8px;
                     }

@@ -19,7 +19,7 @@ $redColor: hsl(0, 80%, 60%);
         font-weight: bold;
     }
     .deal-list{
-        height: 256px;
+        height: 260px;
         overflow-y: scroll;
         transform: rotate(180deg);
         direction: rtl;
@@ -45,10 +45,10 @@ $redColor: hsl(0, 80%, 60%);
                 width: 88px;
             }
             &.sold{
-                width: 88px;
+                width: 80px;
             }
             &.bought{
-                width: 88px;
+                width: 80px;
             }
             &.time{
                 width: 64px;
