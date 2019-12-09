@@ -18,16 +18,19 @@ export class Game{
         for(var i = 0; i < playersQty; i++){
             this.lastplayerId++;
             var label = this.botNames[Math.floor(Math.random()*5)];
-            this.players.push(new BotPlayer(this.lastplayerId, label, 
-            this.marketService));
+            let bot = new BotPlayer(this.lastplayerId, label, this.marketService);
+            this.players.push(bot);
         }
         //Insere os big players:
+        /*this.lastplayerId++;
         this.players.push(new BotPlayer(this.lastplayerId, 'Itaú', 
         marketService));
+        this.lastplayerId++;
         this.players.push(new BotPlayer(this.lastplayerId, 'Bradesco',
         marketService));
+        this.lastplayerId++;
         this.players.push(new BotPlayer(this.lastplayerId, 'Santander', 
-        marketService));
+        marketService));*/
         //Após terminar de construir a lista de players, registra ele no gameService:
         marketService.setPlayersList(this.players);
     }

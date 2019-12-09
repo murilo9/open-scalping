@@ -1,10 +1,13 @@
 import { Player } from './Player';
 import { MarketService } from '../shared/market.service';
 import { Subscription } from 'rxjs';
+import { AI } from '../AI/AI';
+import { Barrier } from '../AI/Barrier';
 
 export class BotPlayer extends Player{
 
     private riskLevel: number;
+    private ai: AI;
     private mayAct: boolean;
     randomOffer: any;
     marketService: MarketService;
@@ -14,11 +17,12 @@ export class BotPlayer extends Player{
         super(id, label, marketService);
         this.human = false;
         this.mayAct = true;
-        this.randomOffer = setTimeout(() => { this.makeRandomOffer(); }, 5000 + Math.random()*50000);
+        //this.randomOffer = setTimeout(() => { this.makeRandomOffer(); }, 5000 + Math.random()*50000);
         this.marketService = marketService;
         this.subscription1 = this.marketService.paused$.subscribe((paused) => {
             this.mayAct = !paused;
         });
+        this.ai = new Barrier(marketService, this);
         //Por enquanto o Bradesco sempre será o provedor da liquidez inicial:
         /*if(label === 'Bradesco'){       
             setTimeout(() => {

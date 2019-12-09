@@ -1,7 +1,7 @@
 import { MarketService } from '../shared/market.service';
 import { Player } from '../core/Player';
 
-export class AI{
+export abstract class AI{
   riskAcceptance: number;
   stage: string;
   player: Player;
