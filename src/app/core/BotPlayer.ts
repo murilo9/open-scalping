@@ -3,6 +3,7 @@ import { MarketService } from '../shared/market.service';
 import { Subscription } from 'rxjs';
 import { AI } from '../AI/AI';
 import { Barrier } from '../AI/Barrier';
+import { MarketMaking } from '../AI/MarketMaking';
 
 export class BotPlayer extends Player{
 
@@ -22,7 +23,7 @@ export class BotPlayer extends Player{
         this.subscription1 = this.marketService.paused$.subscribe((paused) => {
             this.mayAct = !paused;
         });
-        this.ai = new Barrier(marketService, this);
+        this.ai = new MarketMaking(marketService, this);
         //Por enquanto o Bradesco sempre será o provedor da liquidez inicial:
         /*if(label === 'Bradesco'){       
             setTimeout(() => {
